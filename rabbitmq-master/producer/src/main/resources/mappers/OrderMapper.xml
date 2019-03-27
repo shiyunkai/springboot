@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.producer.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="message_id" jdbcType="VARCHAR" property="message_id" />
+  </resultMap>
+
+
+
+  <insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+    insert into r_order (id,name, message_id,create_time,update_time)
+    values (#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR}, #{messageId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <select id="findOrderById" parameterType="java.lang.Integer" resultType="Order">
+    select * from r_order where id = #{id,jdbcType=INTEGER}
+  </select>
+
+</mapper>

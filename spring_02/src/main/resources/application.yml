@@ -1,0 +1,18 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /tx # 项目的访问根目录
+
+
+person:
+  lastName: 凯
+  age: 18
+  boss: true
+  birth: 2010/2/5
+  maps: {key1: value1, key2: value2}
+  list: [list1, list2, list3]
+  dog:
+    name: ${person.hello}_dog #字符串连接luck_dog #旺财
+    age: ${person.age} #5
+  hello: luck
+  email: 123435@qq.com
