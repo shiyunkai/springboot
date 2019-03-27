@@ -1,0 +1,2947 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)https://segmentfault.com/a/1190000009972187 -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"><meta name="renderer" content="webkit"><meta property="qc:admins" content="15317273575564615446375"><meta property="og:image" content="https://static.segmentfault.com/v-5c8b4d77/global/img/touch-icon.png"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><meta name="alexaVerifyID" content="LkzCRJ7rPEUwt6fVey2vhxiw1vQ"><meta name="apple-itunes-app" content="app-id=958101793, app-argument="><title>慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否</title><meta name="description" content="时间：2017年06月26日星期一说明：本文部分内容均来自慕课网。@慕课网：[链接]教学示例源码：[链接]个人学习源码：[链接]"><meta name="keywords" content="quartz,java"><link rel="search" type="application/opensearchdescription+xml" href="https://segmentfault.com/opensearch.xml" title="SegmentFault"><link rel="shortcut icon" href="https://static.segmentfault.com/v-5c8b4d77/global/img/favicon.ico"><link rel="apple-touch-icon" href="https://static.segmentfault.com/v-5c8b4d77/global/img/touch-icon.png"><meta name="msapplication-TileColor" content="#009a61"><meta name="msapplication-square150x150logo" content="https://static.segmentfault.com/v-5c8b4d77/global/img/touch-icon.png"><meta name="baidu_union_verify" content="bcf7fd80dca60d53d46d5b46e1b990ca"><link rel="alternate" type="application/atom+xml" title="SegmentFault 最新问题" href="https://segmentfault.com/feeds/questions"><link rel="alternate" type="application/atom+xml" title="SegmentFault 最新文章" href="https://segmentfault.com/feeds/blogs"><link rel="stylesheet" href="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/global.css"><link rel="stylesheet" href="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/blog.css"><link rel="stylesheet" href="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/responsive.css"><script src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/hm.js.下载"></script><script async="" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/analytics.js.下载"></script><script src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/osd.js.下载"></script><script src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/ca-pub-6330872677300335.js.下载"></script><script type="text/javascript" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/spcjs.php"></script><script type="text/javascript" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/spc.php"></script><script type="text/javascript" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/fl.js.下载"></script>
+<script async="" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/f.txt"></script><script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-6330872677300335",
+            enable_page_level_ads: true
+        });
+    </script><script charset="utf-8" id="ParadigmSDK" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/ParadigmSDK_v2.js.下载" data="216" defsi="594"></script><link rel="preload" href="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/f(1).txt" as="script"><script type="text/javascript" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/f(1).txt"></script><link rel="preload" href="https://pagead2.googlesyndication.com/pagead/js/r20190320/r20190131/show_ads_impl.js" as="script"><script>
+    ParadigmSDK.init("46e957bd9dea4acdaa15b4b64aff728f");
+    ParadigmSDK.trackDetailPageShow();
+</script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="https://static.segmentfault.com/v-5c8b4d77/3rd/highlightjs/highlight.pack.js" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/highlight.pack.js.下载"></script></head><!-- 推荐引擎 --><iframe id="google_shimpl" style="display: none;" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/saved_resource.html"></iframe><body data-mod="blog" class="blog-post "><!--[if lt IE 9]><div class="alert alert-danger topframe" role="alert">你的浏览器实在<strong>太太太太太太旧了</strong>，放学别走，升级完浏览器再说 <a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div><![endif]--><img id="icon4weChat" style="height: 0;width: 0;" data-src="https://static.segmentfault.com/v-5c8b4d77/global/img/touch-icon-512.png"><div id="gridMapHoverBox" style="position:absolute; border: 1px solid #009a61; z-index:99; font-size: 10px; background:#fff"></div><div class="global-nav sf-header sf-header--index"><div class="bottom-nav visible-xs visible-sm hidden"><div class="opts"><a class="opts-group " href="https://segmentfault.com/"><i class="fa fa-home" aria-hidden="true"></i><span>首页</span></a><a class="opts-group " href="https://segmentfault.com/questions"><i class="fa fa-comments" aria-hidden="true"></i><span>问答</span></a><a class="opts-group active" href="https://segmentfault.com/blogs"><i class="fa fa-pencil-square" aria-hidden="true"></i><span>专栏</span></a><a class="opts-group " href="https://segmentfault.com/lives"><i class="fa fa-play-circle" aria-hidden="true"></i><span>讲堂</span></a><div class="opts-group"><div class="btn-group dropup"><i class="fa fa-bars dropdown hoverDropdown" data-toggle="dropdown" aria-hidden="true"><span>更多</span></i><ul class="dropdown-menu"><li><a href="https://segmentfault.com/jobs">职位</a></li><li><a href="https://segmentfault.com/events">活动</a></li><li><a href="https://segmentfault.com/tags">标签</a></li><li><a href="https://segmentfault.com/badges">徽章</a></li></ul></div></div></div></div><nav class="container nav"><div class="visible-xs visible-sm header-response"><a href="https://segmentfault.com/search" style="display:block"><i class="fa fa-search" aria-hidden="true"></i></a><div class="sf-header__logo sf-header__logo--response"><h1><a href="https://segmentfault.com/" style="height:24px; background-size: auto 24px;"></a></h1></div><a href="https://segmentfault.com/user/login" class="pull-right login-btn"><i class="fa fa-user" aria-hidden="true"></i></a></div><script>
+mobileScroll(
+    function(direction) { 
+        try {
+            if (direction === 'down') {
+                document.querySelector('.bottom-nav').classList.add('hidden')
+            } else {
+                document.querySelector('.bottom-nav').classList.remove('hidden')
+            }
+        } catch(err) {}
+    }
+);    
+function mobileScroll( fn ) {
+    var beforeScrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+        fn = fn || function() {};
+    window.addEventListener("scroll", function() {
+        var afterScrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+            delta = afterScrollTop - beforeScrollTop;
+        if( delta === 0 ) return false;
+        fn( delta > 0 ? "down" : "up" );
+        beforeScrollTop = afterScrollTop;
+    }, false);
+}
+</script><div class="row hidden-xs hidden-sm"><div class="col-sm-8 col-md-9 col-lg-9"><div class="sf-header__logo"><h1><a href="https://segmentfault.com/">SegmentFault</a></h1></div><div><ul class="menu list-inline pull-left hidden-xs"><li class="menu__item"><a href="https://segmentfault.com/" class="">首页</a></li><li class="menu__item"><a href="https://segmentfault.com/questions" class="">问答</a></li><li class="menu__item"><a href="https://segmentfault.com/blogs" class="active-nav">专栏</a></li><li class="menu__item"><a class=" " href="https://segmentfault.com/lives">讲堂</a></li><li class="menu__item"><a href="https://segmentfault.com/groups" class="">圈子</a></li><li class="menu__item menu__item--more dropdown"><a href="https://segmentfault.com/a/1190000009972187##" class="dropdown-toggle dropdownBtn" data-toggle="dropdown">
+                                        发现<i class="fa fa-caret-down" style="font-size: 14px;margin-left: 5px;" aria-hidden="true"></i></a><div class="dropdown-block hidden"><ul class="dropdown-content-menu"><li><a href="https://segmentfault.com/events">活动</a></li><li><a href="https://segmentfault.com/tags">标签</a></li><li><a href="https://segmentfault.com/groups?tab=jobs">酷工作</a></li><li><a href="https://segmentfault.com/users">排行榜</a></li><li><a href="https://segmentfault.com/badges">徽章</a></li><li><a href="https://segmentfault.com/notes">笔记</a></li><li><a href="https://docs.segmentfault.com/" target="_blank">开发手册<i style="line-height: 20px;font-size: 12px;color: #F5A623;" class="ml10 fa fa-external-link-square"></i></a></li><li><a href="https://business.segmentfault.com/ads?utm_source=sf-header" target="_blank">广告投放<i style="line-height: 20px;font-size: 12px;color: #F5A623;" class="ml10 fa fa-external-link-square"></i></a></li></ul></div></li><li class="menu__item visible-sm-inline-block"><a href="https://segmentfault.com/search"><span class="glyphicon glyphicon-search" style="vertical-align: middle;"></span></a></li></ul><form action="https://segmentfault.com/search" class="header-search  hidden-sm hidden-xs pull-right"><button class="btn btn-link"><span class="sr-only">搜索</span><span class="glyphicon glyphicon-search"></span></button><input id="searchBox" name="q" type="text" placeholder="搜索问题或关键字" class="form-control" value=""></form></div></div><div class="col-sm-4 col-md-3 col-lg-3 text-right"><ul class="opts list-inline hidden-xs"><li class="opts__item"><a href="https://segmentfault.com/user/login" class="SFRegister btn-signin" style="margin-bottom:2px;">立即登录</a><a href="https://segmentfault.com/user/register" class="SFLogin ml10 btn-signup" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Button&#39;, &#39;Click&#39;, &#39;Login&#39;]);">免费注册</a></li></ul></div></div></nav></div>
+    
+<input id="articleId" value="1190000009972187" class="hidden">
+
+<div class="wrap" data-blogid="1200000007427695">
+
+    <div class="text-center block hidden-xs">
+        <script type="text/javascript">
+            OA_show(2);
+        </script><div style="line-height: 0; background: #FAFAFA">
+<div class="container text-center" style="position: relative;">
+<a href="https://segmentfault.com/user/login" class="small text-muted" style="position: absolute; top: 10px; right: 15px;">登录免广告</a><script async="" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/f.txt"></script>
+<!-- 导航下横幅广告（大型） -->
+<ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-6330872677300335" data-ad-slot="6450634185" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:970px;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:970px;background-color:transparent;"><iframe width="970" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0px;width:970px;height:90px;" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/saved_resource(1).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><div id="beacon_a96332846d" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg.php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div></div>
+</div>
+
+    </div>
+    
+    <div class="container mt15" style="position:relative">
+        <div class="row">
+            <div class="col-xs-12 col-md-9 main ">
+                                <ol class="breadcrumb mb15">
+                    <li><a href="https://segmentfault.com/blogs">专栏</a></li>
+                                        <li><a href="https://segmentfault.com/blog/zccoder">study</a></li>
+                                        <li class="active">文章详情</li>
+                </ol>
+                                <div class="post-topheader custom- pt0">
+                    <div class="mb20">
+                        <div class="block-for-right-border">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                
+
+                                    <div class="post-topheader__info" data-username="妙手空空" data-userslug="mskk" data-useravatar="https://avatar-static.segmentfault.com/175/822/1758225808-58a82fa389065_big64">
+
+
+                                        <div class="article__author clearfix">
+                                            <div class="article__authorleft">
+                                                <a href="https://segmentfault.com/u/mskk">
+                                                    <img class="avatar-40" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/1758225808-58a82fa389065_big64" alt="妙手空空">
+                                                </a>
+                                            </div>
+                                            <div class="article__authorright">
+                                                <div class="article__authormeta">
+                                                <a href="https://segmentfault.com/u/mskk" class="mr5"><strong>妙手空空</strong></a>
+                                        
+                                                
+                                                                                                <img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/rp.svg" class="mr5"><span style="color:#BF7158" class="mr10">994</span>
+
+                                                                                                发布于
+                                                <a href="https://segmentfault.com/blog/zccoder">study</a>
+                                                
+                                                
+                                                <span class="hidden-xs">
+                                                                                                                                                          <button type="button" class="btn btn-xs btn-success follow-article ml10" data-do="follow" data-type="blog" data-id="1200000007427695">关注专栏
+                                                       </button>
+                                                                                                                                                   </span>
+                                                </div>
+                                                
+                                                <span style="display: block">
+                                                    2017-06-29 发布
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <h1 class="h1 post-topheader__info--title" id="articleTitle" data-id="1190000009972187">
+                                            <a href="https://segmentfault.com/a/1190000009972187"> 慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结</a>
+                                        </h1>
+
+                                        <div class="content__tech hidden-xs">
+                                            <a href="https://segmentfault.com/a/1190000009972187" class="blog-type-common blog-type-0-before" target="_blank" data-content="
+                                                                                        翻译自 
+                                                                                        "></a>
+                                            
+                                            <ul class="taglist--inline inline-block article__title--tag mr10">
+                                                                                                    <li class="tagPopup mb5">
+                                                        <a class="tag" href="https://segmentfault.com/t/quartz/blogs" data-toggle="popover" data-img="" data-placement="top" data-original-title="quartz" data-id="1040000000131086">
+                                                                                                                      quartz
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="tagPopup mb5">
+                                                        <a class="tag" href="https://segmentfault.com/t/java/blogs" data-toggle="popover" data-img="https://avatar-static.segmentfault.com/512/342/51234253-1040000000089449_big64" data-placement="top" data-original-title="java" data-id="1040000000089449">
+                                                                                                                    <img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/868271510-54cb382abb7a1_small">
+                                                                                                                      java
+                                                        </a>
+                                                    </li>
+                                                                                            </ul>
+
+                                            <span>
+                                                4.2k 次阅读
+                                                &nbsp;·&nbsp;
+                                                读完需要 81 分钟 
+                                                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end .post-topheader -->
+
+                <div class="visible-lg">
+                    <div class="side-widget">
+                        <div class="stream__item-zan btn btn-default mt0 mb15 ml0 mr0 pt0 pb0 pl0 pr0 " id="side-widget-votes-btn">
+                            <span class="stream__item-zan-icon"></span>
+                            <span class="stream__item-zan-number" id="side-widget-votes-num">5</span>
+                        </div>
+
+                        <i class="fa fa-bookmark item " id="side-widget-bookmarks-btn"></i>
+                        <i class="fa fa-weibo item"></i>
+                        <i class="fa fa-weixin item" data-toggle="popover" data-placement="right" data-original-title="" title=""></i>
+                        <i class="fa fa-twitter item"></i>
+                        <i class="fa fa-facebook item"></i>
+                        <i class="fa fa-arrow-up item"></i>
+                    </div>
+                </div>
+
+                
+                <div class="article fmt article__content" data-id="1190000009972187" data-license="cc">
+                    
+<p>时间：2017年06月26日星期一<br>说明：本文部分内容均来自慕课网。@慕课网：<a href="http://www.imooc.com/" rel="nofollow noreferrer" target="_blank">http://www.imooc.com</a><br>教学示例源码：<a href="https://github.com/zccodere/study-imooc" rel="nofollow noreferrer" target="_blank">https://github.com/zccodere/s...</a><br>个人学习源码：<a href="https://github.com/zccodere/study-imooc" rel="nofollow noreferrer" target="_blank">https://github.com/zccodere/s...</a></p>
+<h1 id="articleHeader0">第一章：课程介绍</h1>
+<h2 id="articleHeader1">1-1 初识Quartz</h2>
+<p>Quartz概要</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="OpenSymphony提供的强大的开源任务调度框架
+官网：http://www.quartz-scheduler.org
+纯Java实现，精细控制排程" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs groovy"><code>OpenSymphony提供的强大的开源任务调度框架
+官网：<span class="hljs-string">http:</span><span class="hljs-comment">//www.quartz-scheduler.org</span>
+纯Java实现，精细控制排程</code></pre>
+<p>Quartz特点</p>
+<div class="widget-codetool" style="display: none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="强大的调度功能
+灵活的应用方式
+分布式和集群能力" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>强大的调度功能
+灵活的应用方式
+分布式和集群能力</code></pre>
+<p>Quartz的设计模式</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="Builder模式
+Factory模式
+组件模式
+链式写法" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>Builder模式
+Factory模式
+组件模式
+链式写法</code></pre>
+<p>Quartz三个核心概念</p>
+<div class="widget-codetool" style="display: none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="调度器
+任务
+触发器" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>调度器
+任务
+触发器</code></pre>
+<p>Quartz体系结构</p>
+<div class="widget-codetool" style="display: none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="JobDetail
+trigger
+    SimpleTrigger
+    CronTrigger
+scheduler
+    start
+    stop
+    pause
+    resume" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs sql"><code>JobDetail
+trigger
+    SimpleTrigger
+    CronTrigger
+scheduler
+    <span class="hljs-keyword">start</span>
+    <span class="hljs-keyword">stop</span>
+    pause
+    <span class="hljs-keyword">resume</span></code></pre>
+<p>示意图</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0l8?w=554&amp;h=236" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/bVP0l8" alt="clipboard.png" title="clipboard.png" style="cursor: pointer; display: inline;"></span></p>
+<p>Quartz重要组成</p>
+<div class="widget-codetool" style="display: none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="Job
+JobDetail
+JobBuilder
+JobStore
+Trigger
+TriggerBuilder
+ThreadPool
+Scheduler
+Calendar：一个Trigger可以和多个Calendar关联，以排除或包含某些时间点
+监听器
+    JobListener
+    TriggerListener
+    SchedulerListener
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs nginx"><code><span class="hljs-attribute">Job</span>
+JobDetail
+JobBuilder
+JobStore
+Trigger
+TriggerBuilder
+ThreadPool
+Scheduler
+Calendar：一个Trigger可以和多个Calendar关联，以排除或包含某些时间点
+监听器
+    JobListener
+    TriggerListener
+    SchedulerListener
+</code></pre>
+<h1 id="articleHeader2">第二章：Quartz详解</h1>
+<h2 id="articleHeader3">2-1 第一个Quartz程序</h2>
+<p>准备工作</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="建立Maven项目工程
+引入Quartz包" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>建立Maven项目工程
+引入Quartz包</code></pre>
+<p>编写第一个Quartz任务</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="让任务每隔两秒打印一次hellworld" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code style="word-break: break-word; white-space: initial;">让任务每隔两秒打印一次hellworld</code></pre>
+<p>代码演示</p>
+<p>1.编写任务类</p>
+<div class="widget-codetool" style="display: none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.one;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+
+/**
+ * 编写 自定义任务
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloJob implements Job{
+    
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Exec Time Is : &quot; + sf.format(date));
+        
+        // 编写具体的业务逻辑
+        System.out.println(&quot;Hello World!&quot;);
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs java"><code><span class="hljs-keyword">package</span> com.myimooc.helloquartz.one;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.Job;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionContext;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionException;
+
+<span class="hljs-comment">/**
+ * 编写 自定义任务
+ * <span class="hljs-doctag">@author</span> ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloJob</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Job</span></span>{
+    
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">execute</span><span class="hljs-params">(JobExecutionContext context)</span> <span class="hljs-keyword">throws</span> JobExecutionException </span>{
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        Date date = <span class="hljs-keyword">new</span> Date();
+        SimpleDateFormat sf = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        System.out.println(<span class="hljs-string">"Current Exec Time Is : "</span> + sf.format(date));
+        
+        <span class="hljs-comment">// 编写具体的业务逻辑</span>
+        System.out.println(<span class="hljs-string">"Hello World!"</span>);
+    }
+    
+}
+</code></pre>
+<p>2.编写任务调度类</p>
+<div class="widget-codetool" style="display: none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.one;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
+/**
+ * 编写 任务调度类
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloScheduler {
+    
+    public static void main(String[] args) throws SchedulerException {
+        
+        // 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定
+        JobDetail jobDeatil = JobBuilder.newJob(HelloJob.class)
+                .withIdentity(&quot;myjob&quot;, &quot;jobgroup1&quot;)// 定义标识符
+                .build();
+        
+        System.out.println(&quot;jobDetail&#39;s name : &quot; + jobDeatil.getKey().getName());
+        System.out.println(&quot;jobDetail&#39;s group : &quot; + jobDeatil.getKey().getGroup());
+        System.out.println(&quot;jobDetail&#39;s jobClass : &quot; + jobDeatil.getJobClass().getName());
+        
+        // 创建一个 Trigger 实例，定义该 job 立即执行，并且每隔两秒重复执行一次，直到永远
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(&quot;myTrigger&quot;,&quot;trigroup1&quot;)// 定义标识符
+                .startNow()// 定义立即执行
+                .withSchedule(SimpleScheduleBuilder
+                        .simpleSchedule()
+                        .withIntervalInSeconds(2)
+                        .repeatForever())// 定义执行频度
+                .build();
+        
+        // 创建 Scheduler 实例
+        SchedulerFactory sfact = new StdSchedulerFactory();
+        Scheduler scheduler = sfact.getScheduler();
+        
+        // 绑定 JobDetail 和 trigger
+        scheduler.scheduleJob(jobDeatil, trigger);
+        
+        // 执行任务
+        scheduler.start();
+        
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Time Is : &quot; + sf.format(date));
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs swift"><code>package com.myimooc.helloquartz.one;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.JobBuilder;
+<span class="hljs-keyword">import</span> org.quartz.JobDetail;
+<span class="hljs-keyword">import</span> org.quartz.Scheduler;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerException;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerFactory;
+<span class="hljs-keyword">import</span> org.quartz.SimpleScheduleBuilder;
+<span class="hljs-keyword">import</span> org.quartz.Trigger;
+<span class="hljs-keyword">import</span> org.quartz.TriggerBuilder;
+<span class="hljs-keyword">import</span> org.quartz.impl.StdSchedulerFactory;
+
+<span class="hljs-comment">/**
+ * 编写 任务调度类
+ * @author ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloScheduler</span> </span>{
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) <span class="hljs-keyword">throws</span> <span class="hljs-type">SchedulerException</span> {
+        
+        <span class="hljs-comment">// 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定</span>
+        <span class="hljs-type">JobDetail</span> jobDeatil = <span class="hljs-type">JobBuilder</span>.newJob(<span class="hljs-type">HelloJob</span>.<span class="hljs-keyword">class</span>)
+                .withIdentity(<span class="hljs-string">"myjob"</span>, <span class="hljs-string">"jobgroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .build();
+        
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"jobDetail's name : "</span> + jobDeatil.getKey().getName());
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"jobDetail's group : "</span> + jobDeatil.getKey().getGroup());
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"jobDetail's jobClass : "</span> + jobDeatil.getJobClass().getName());
+        
+        <span class="hljs-comment">// 创建一个 Trigger 实例，定义该 job 立即执行，并且每隔两秒重复执行一次，直到永远</span>
+        <span class="hljs-type">Trigger</span> trigger = <span class="hljs-type">TriggerBuilder</span>.newTrigger()
+                .withIdentity(<span class="hljs-string">"myTrigger"</span>,<span class="hljs-string">"trigroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .startNow()<span class="hljs-comment">// 定义立即执行</span>
+                .withSchedule(<span class="hljs-type">SimpleScheduleBuilder</span>
+                        .simpleSchedule()
+                        .withIntervalInSeconds(<span class="hljs-number">2</span>)
+                        .repeatForever())<span class="hljs-comment">// 定义执行频度</span>
+                .build();
+        
+        <span class="hljs-comment">// 创建 Scheduler 实例</span>
+        <span class="hljs-type">SchedulerFactory</span> sfact = new <span class="hljs-type">StdSchedulerFactory</span>();
+        <span class="hljs-type">Scheduler</span> scheduler = sfact.getScheduler();
+        
+        <span class="hljs-comment">// 绑定 JobDetail 和 trigger</span>
+        scheduler.scheduleJob(jobDeatil, trigger);
+        
+        <span class="hljs-comment">// 执行任务</span>
+        scheduler.start();
+        
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        <span class="hljs-type">Date</span> date = new <span class="hljs-type">Date</span>();
+        <span class="hljs-type">SimpleDateFormat</span> sf = new <span class="hljs-type">SimpleDateFormat</span>(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Current Time Is : "</span> + sf.format(date));
+    }
+    
+}
+</code></pre>
+<h2 id="articleHeader4">2-2 浅谈Job&amp;JobDetail</h2>
+<p>Job定义</p>
+<div class="widget-codetool" style="display: none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="实现业务逻辑的任务接口" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code style="word-break: break-word; white-space: initial;">实现业务逻辑的任务接口</code></pre>
+<p>浅谈Job</p>
+<div class="widget-codetool" style="">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="Job接口非常容易实现，只有一个execute方法，类似TimerTask的run方法，在里面编写业务逻辑
+Job接口源码
+public interface Job {
+    void execute(JobExecutionContext context) throws JobExecutionException;
+}" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs java"><code>Job接口非常容易实现，只有一个execute方法，类似TimerTask的run方法，在里面编写业务逻辑
+Job接口源码
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Job</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">execute</span><span class="hljs-params">(JobExecutionContext context)</span> <span class="hljs-keyword">throws</span> JobExecutionException</span>;
+}</code></pre>
+<p>Job实例在Quartz中的生命周期</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="每次调度器执行job时，它在调用execute方法前会创建一个新的job实例
+当调用完成后，关联的job对象实例会被释放，释放的实例会被垃圾回收机制回收" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs sql"><code>每次调度器执行job时，它在调用<span class="hljs-keyword">execute</span>方法前会创建一个新的job实例
+当调用完成后，关联的job对象实例会被释放，释放的实例会被垃圾回收机制回收</code></pre>
+<p>浅谈JobDetail</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="JobDetail为Job实例提供了许多设置属性，以及JobDetailMap成员变量属性，它用来存储特定Job实例的状态信息，调度器需要借助JobDetail对象来添加Job实例。" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code style="word-break: break-word; white-space: initial;">JobDetail为Job实例提供了许多设置属性，以及JobDetailMap成员变量属性，它用来存储特定Job实例的状态信息，调度器需要借助JobDetail对象来添加Job实例。</code></pre>
+<p>JobDetail属性</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="name：任务名称
+group：任务所属组
+jobClass：任务实现类
+jobDataMap：传参的作用
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs fortran"><code><span class="hljs-keyword">name</span>：任务名称
+group：任务所属组
+jobClass：任务实现类
+jobDataMap：传参的作用
+</code></pre>
+<h2 id="articleHeader5">2-3 浅谈JobExecutionContext&amp;JobDataMap（上）</h2>
+<p>JobExecutionContext是什么</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="当Scheduler调用一个Job，就会将JobExecutionContext传递给Job的execute()方法；
+Job能通过JobExecutionContext对象访问到Quartz运行时候的环境以及Job本身的明细数据。" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs sql"><code>当Scheduler调用一个Job，就会将JobExecutionContext传递给Job的<span class="hljs-keyword">execute</span>()方法；
+Job能通过JobExecutionContext对象访问到Quartz运行时候的环境以及Job本身的明细数据。</code></pre>
+<p>JobDataMap是什么</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="在进行任务调度时JobDataMap存储在JobExecutionContext中，非常方便获取
+JobDataMap可以用来装载任务可序列化的数据对象，当job实例对象被执行时这些参数对象会传递给它
+JobDataMap实现了JDK的Map接口，并且添加了一些非常方便的方法用来存取基本数据类型
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs javascript"><code>在进行任务调度时JobDataMap存储在JobExecutionContext中，非常方便获取
+JobDataMap可以用来装载任务可序列化的数据对象，当job实例对象被执行时这些参数对象会传递给它
+JobDataMap实现了JDK的<span class="hljs-built_in">Map</span>接口，并且添加了一些非常方便的方法用来存取基本数据类型
+</code></pre>
+<h2 id="articleHeader6">2-4 浅谈JobExecutionContext&amp;JobDataMap（下）</h2>
+<p>获取JobDataMap的两种方式</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="从Map中直接获取
+Job实现类中添加setter方法对应JobDataMap的键值
+（Quartz框架默认的JobFactory实现类在初始化job实例对象时会自动地调用这些setter方式）" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs objectivec"><code>从Map中直接获取
+Job实现类中添加<span class="hljs-keyword">setter</span>方法对应JobDataMap的键值
+（Quartz框架默认的JobFactory实现类在初始化job实例对象时会自动地调用这些<span class="hljs-keyword">setter</span>方式）</code></pre>
+<p>代码演示</p>
+<p>1.HelloScheduler类改造</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.two;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
+/**
+ * 编写 任务调度类
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloScheduler {
+    
+    public static void main(String[] args) throws SchedulerException {
+        
+        // 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定
+        JobDetail jobDeatil = JobBuilder.newJob(HelloJob.class)
+                .withIdentity(&quot;myjob&quot;, &quot;jobgroup1&quot;)// 定义标识符
+                .usingJobData(&quot;message&quot;, &quot;hello myjob1&quot;)// 传入自定义参数
+                .usingJobData(&quot;floatJobValue&quot;, 3.14F)// 传入自定义参数
+                .build();
+        
+        System.out.println(&quot;jobDetail&#39;s name : &quot; + jobDeatil.getKey().getName());
+        System.out.println(&quot;jobDetail&#39;s group : &quot; + jobDeatil.getKey().getGroup());
+        System.out.println(&quot;jobDetail&#39;s jobClass : &quot; + jobDeatil.getJobClass().getName());
+        
+        // 创建一个 Trigger 实例，定义该 job 立即执行，并且每隔两秒重复执行一次，直到永远
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(&quot;myTrigger&quot;,&quot;trigroup1&quot;)// 定义标识符
+                .usingJobData(&quot;message&quot;, &quot;hello mytrigger1&quot;)// 传入自定义参数
+                .usingJobData(&quot;doubleTriggerValue&quot;, 2.0D)// 传入自定义参数
+                .startNow()// 定义立即执行
+                .withSchedule(SimpleScheduleBuilder
+                        .simpleSchedule()
+                        .withIntervalInSeconds(2)
+                        .repeatForever())// 定义执行频度
+                .build();
+        
+        // 创建 Scheduler 实例
+        SchedulerFactory sfact = new StdSchedulerFactory();
+        Scheduler scheduler = sfact.getScheduler();
+        
+        // 绑定 JobDetail 和 trigger
+        scheduler.scheduleJob(jobDeatil, trigger);
+        
+        // 执行任务
+        scheduler.start();
+        
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Time Is : &quot; + sf.format(date));
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs swift"><code>package com.myimooc.helloquartz.two;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.JobBuilder;
+<span class="hljs-keyword">import</span> org.quartz.JobDetail;
+<span class="hljs-keyword">import</span> org.quartz.Scheduler;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerException;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerFactory;
+<span class="hljs-keyword">import</span> org.quartz.SimpleScheduleBuilder;
+<span class="hljs-keyword">import</span> org.quartz.Trigger;
+<span class="hljs-keyword">import</span> org.quartz.TriggerBuilder;
+<span class="hljs-keyword">import</span> org.quartz.impl.StdSchedulerFactory;
+
+<span class="hljs-comment">/**
+ * 编写 任务调度类
+ * @author ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloScheduler</span> </span>{
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) <span class="hljs-keyword">throws</span> <span class="hljs-type">SchedulerException</span> {
+        
+        <span class="hljs-comment">// 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定</span>
+        <span class="hljs-type">JobDetail</span> jobDeatil = <span class="hljs-type">JobBuilder</span>.newJob(<span class="hljs-type">HelloJob</span>.<span class="hljs-keyword">class</span>)
+                .withIdentity(<span class="hljs-string">"myjob"</span>, <span class="hljs-string">"jobgroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .usingJobData(<span class="hljs-string">"message"</span>, <span class="hljs-string">"hello myjob1"</span>)<span class="hljs-comment">// 传入自定义参数</span>
+                .usingJobData(<span class="hljs-string">"floatJobValue"</span>, <span class="hljs-number">3</span>.14F)<span class="hljs-comment">// 传入自定义参数</span>
+                .build();
+        
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"jobDetail's name : "</span> + jobDeatil.getKey().getName());
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"jobDetail's group : "</span> + jobDeatil.getKey().getGroup());
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"jobDetail's jobClass : "</span> + jobDeatil.getJobClass().getName());
+        
+        <span class="hljs-comment">// 创建一个 Trigger 实例，定义该 job 立即执行，并且每隔两秒重复执行一次，直到永远</span>
+        <span class="hljs-type">Trigger</span> trigger = <span class="hljs-type">TriggerBuilder</span>.newTrigger()
+                .withIdentity(<span class="hljs-string">"myTrigger"</span>,<span class="hljs-string">"trigroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .usingJobData(<span class="hljs-string">"message"</span>, <span class="hljs-string">"hello mytrigger1"</span>)<span class="hljs-comment">// 传入自定义参数</span>
+                .usingJobData(<span class="hljs-string">"doubleTriggerValue"</span>, <span class="hljs-number">2</span>.0D)<span class="hljs-comment">// 传入自定义参数</span>
+                .startNow()<span class="hljs-comment">// 定义立即执行</span>
+                .withSchedule(<span class="hljs-type">SimpleScheduleBuilder</span>
+                        .simpleSchedule()
+                        .withIntervalInSeconds(<span class="hljs-number">2</span>)
+                        .repeatForever())<span class="hljs-comment">// 定义执行频度</span>
+                .build();
+        
+        <span class="hljs-comment">// 创建 Scheduler 实例</span>
+        <span class="hljs-type">SchedulerFactory</span> sfact = new <span class="hljs-type">StdSchedulerFactory</span>();
+        <span class="hljs-type">Scheduler</span> scheduler = sfact.getScheduler();
+        
+        <span class="hljs-comment">// 绑定 JobDetail 和 trigger</span>
+        scheduler.scheduleJob(jobDeatil, trigger);
+        
+        <span class="hljs-comment">// 执行任务</span>
+        scheduler.start();
+        
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        <span class="hljs-type">Date</span> date = new <span class="hljs-type">Date</span>();
+        <span class="hljs-type">SimpleDateFormat</span> sf = new <span class="hljs-type">SimpleDateFormat</span>(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Current Time Is : "</span> + sf.format(date));
+    }
+    
+}
+</code></pre>
+<p>2.HelloJob类改造</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.two;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
+import org.quartz.TriggerKey;
+
+/**
+ * 编写 自定义任务
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloJob implements Job{
+    
+    // 方式二：getter和setter获取
+    // 成员变量 与 传入参数的key一致
+    private String message;
+    private Float floatJobValue;
+    private Double doubleTriggerValue;
+    
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    public Float getFloatJobValue() {
+        return floatJobValue;
+    }
+    public void setFloatJobValue(Float floatJobValue) {
+        this.floatJobValue = floatJobValue;
+    }
+    public Double getDoubleTriggerValue() {
+        return doubleTriggerValue;
+    }
+    public void setDoubleTriggerValue(Double doubleTriggerValue) {
+        this.doubleTriggerValue = doubleTriggerValue;
+    }
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Exec Time Is : &quot; + sf.format(date));
+        
+        // 编写具体的业务逻辑
+        //System.out.println(&quot;Hello World!&quot;);
+        
+        JobKey key = context.getJobDetail().getKey();
+        System.out.println(&quot;My name and group are : &quot; + key.getName() + &quot; : &quot; + key.getGroup());
+        
+        TriggerKey trkey = context.getTrigger().getKey();
+        System.out.println(&quot;My Trigger name and group are : &quot; + trkey.getName() + &quot; : &quot; + trkey.getGroup());
+        
+        // 方式一：Map中直接  获取自定义参数
+        JobDataMap jdataMap = context.getJobDetail().getJobDataMap();
+        JobDataMap tdataMap = context.getTrigger().getJobDataMap();
+        String jobMsg = jdataMap.getString(&quot;message&quot;);
+        Float jobFloatValue = jdataMap.getFloat(&quot;floatJobValue&quot;);
+        
+        String triMsg = tdataMap.getString(&quot;message&quot;);
+        Double triDoubleValue = tdataMap.getDouble(&quot;doubleTriggerValue&quot;);
+        
+        System.out.println(&quot;jobMsg is : &quot; + jobMsg);
+        System.out.println(&quot;jobFloatValue is : &quot; + jobFloatValue);
+        System.out.println(&quot;triMsg is : &quot; + triMsg);
+        System.out.println(&quot;triDoubleValue is : &quot; + triDoubleValue);
+        
+        // 方式一：Map中直接获取 获取自定义参数
+        JobDataMap jobDataMap = context.getMergedJobDataMap();
+        jobMsg = jobDataMap.getString(&quot;message&quot;);
+        jobFloatValue = jobDataMap.getFloat(&quot;floatJobValue&quot;);
+        
+        triMsg = jobDataMap.getString(&quot;message&quot;);
+        triDoubleValue = jobDataMap.getDouble(&quot;doubleTriggerValue&quot;);
+        
+        System.out.println(&quot;jobMsg is : &quot; + jobMsg);
+        System.out.println(&quot;jobFloatValue is : &quot; + jobFloatValue);
+        System.out.println(&quot;triMsg is : &quot; + triMsg);
+        System.out.println(&quot;triDoubleValue is : &quot; + triDoubleValue);
+        
+        // 方式二：getter和setter获取
+        System.out.println(&quot;message is : &quot; + this.message);
+        System.out.println(&quot;jobFloatValue is : &quot; + this.floatJobValue);
+        System.out.println(&quot;triDoubleValue is : &quot; + this.doubleTriggerValue);
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs kotlin"><code><span class="hljs-keyword">package</span> com.myimooc.helloquartz.two;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.Job;
+<span class="hljs-keyword">import</span> org.quartz.JobDataMap;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionContext;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionException;
+<span class="hljs-keyword">import</span> org.quartz.JobKey;
+<span class="hljs-keyword">import</span> org.quartz.TriggerKey;
+
+<span class="hljs-comment">/**
+ * 编写 自定义任务
+ * <span class="hljs-doctag">@author</span> ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloJob</span> <span class="hljs-title">implements</span> <span class="hljs-title">Job</span></span>{
+    
+    <span class="hljs-comment">// 方式二：getter和setter获取</span>
+    <span class="hljs-comment">// 成员变量 与 传入参数的key一致</span>
+    <span class="hljs-keyword">private</span> String message;
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">Float</span> floatJobValue;
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">Double</span> doubleTriggerValue;
+    
+    <span class="hljs-keyword">public</span> String getMessage() {
+        <span class="hljs-keyword">return</span> message;
+    }
+    <span class="hljs-keyword">public</span> void setMessage(String message) {
+        <span class="hljs-keyword">this</span>.message = message;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-built_in">Float</span> getFloatJobValue() {
+        <span class="hljs-keyword">return</span> floatJobValue;
+    }
+    <span class="hljs-keyword">public</span> void setFloatJobValue(<span class="hljs-built_in">Float</span> floatJobValue) {
+        <span class="hljs-keyword">this</span>.floatJobValue = floatJobValue;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-built_in">Double</span> getDoubleTriggerValue() {
+        <span class="hljs-keyword">return</span> doubleTriggerValue;
+    }
+    <span class="hljs-keyword">public</span> void setDoubleTriggerValue(<span class="hljs-built_in">Double</span> doubleTriggerValue) {
+        <span class="hljs-keyword">this</span>.doubleTriggerValue = doubleTriggerValue;
+    }
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> void execute(JobExecutionContext context) throws JobExecutionException {
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Current Exec Time Is : "</span> + sf.format(date));
+        
+        <span class="hljs-comment">// 编写具体的业务逻辑</span>
+        <span class="hljs-comment">//System.out.println("Hello World!");</span>
+        
+        JobKey key = context.getJobDetail().getKey();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"My name and group are : "</span> + key.getName() + <span class="hljs-string">" : "</span> + key.getGroup());
+        
+        TriggerKey trkey = context.getTrigger().getKey();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"My Trigger name and group are : "</span> + trkey.getName() + <span class="hljs-string">" : "</span> + trkey.getGroup());
+        
+        <span class="hljs-comment">// 方式一：Map中直接  获取自定义参数</span>
+        JobDataMap jdataMap = context.getJobDetail().getJobDataMap();
+        JobDataMap tdataMap = context.getTrigger().getJobDataMap();
+        String jobMsg = jdataMap.getString(<span class="hljs-string">"message"</span>);
+        <span class="hljs-built_in">Float</span> jobFloatValue = jdataMap.getFloat(<span class="hljs-string">"floatJobValue"</span>);
+        
+        String triMsg = tdataMap.getString(<span class="hljs-string">"message"</span>);
+        <span class="hljs-built_in">Double</span> triDoubleValue = tdataMap.getDouble(<span class="hljs-string">"doubleTriggerValue"</span>);
+        
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"jobMsg is : "</span> + jobMsg);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"jobFloatValue is : "</span> + jobFloatValue);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"triMsg is : "</span> + triMsg);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"triDoubleValue is : "</span> + triDoubleValue);
+        
+        <span class="hljs-comment">// 方式一：Map中直接获取 获取自定义参数</span>
+        JobDataMap jobDataMap = context.getMergedJobDataMap();
+        jobMsg = jobDataMap.getString(<span class="hljs-string">"message"</span>);
+        jobFloatValue = jobDataMap.getFloat(<span class="hljs-string">"floatJobValue"</span>);
+        
+        triMsg = jobDataMap.getString(<span class="hljs-string">"message"</span>);
+        triDoubleValue = jobDataMap.getDouble(<span class="hljs-string">"doubleTriggerValue"</span>);
+        
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"jobMsg is : "</span> + jobMsg);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"jobFloatValue is : "</span> + jobFloatValue);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"triMsg is : "</span> + triMsg);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"triDoubleValue is : "</span> + triDoubleValue);
+        
+        <span class="hljs-comment">// 方式二：getter和setter获取</span>
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"message is : "</span> + <span class="hljs-keyword">this</span>.message);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"jobFloatValue is : "</span> + <span class="hljs-keyword">this</span>.floatJobValue);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"triDoubleValue is : "</span> + <span class="hljs-keyword">this</span>.doubleTriggerValue);
+    }
+    
+}
+</code></pre>
+<h2 id="articleHeader7">2-5 浅谈Trigger</h2>
+<p>Trigger是什么</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="Quartz中的触发器用来告诉调度程序作业什么时候触发
+即Trigger对象时用来触发执行Job的" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>Quartz中的触发器用来告诉调度程序作业什么时候触发
+即Trigger对象时用来触发执行Job的</code></pre>
+<p>Quartz框架中的Trigger示意图</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mr?w=554&amp;h=195" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>触发器通用属性</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="JobKey：表示job实例的标识，触发器被触发时，该指定的job实例会执行
+StartTime：表示触发器的时间表首次被触发的时间，它的值的类型是Java.util.Date
+EndTime：指定触发器的不再被触发的时间，它的值的类型是Java.util.Date" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs css"><code><span class="hljs-selector-tag">JobKey</span>：表示<span class="hljs-selector-tag">job</span>实例的标识，触发器被触发时，该指定的<span class="hljs-selector-tag">job</span>实例会执行
+<span class="hljs-selector-tag">StartTime</span>：表示触发器的时间表首次被触发的时间，它的值的类型是<span class="hljs-selector-tag">Java</span><span class="hljs-selector-class">.util</span><span class="hljs-selector-class">.Date</span>
+<span class="hljs-selector-tag">EndTime</span>：指定触发器的不再被触发的时间，它的值的类型是<span class="hljs-selector-tag">Java</span><span class="hljs-selector-class">.util</span><span class="hljs-selector-class">.Date</span></code></pre>
+<p>代码演示</p>
+<p>1.HelloJob类改造</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.three;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
+import org.quartz.Trigger;
+
+/**
+ * 自定义任务  触发器通用属性
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloJob implements Job{
+    
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Exec Time Is : &quot; + sf.format(date));
+        
+        Trigger currentTrigger = context.getTrigger();
+        System.out.println(&quot;Start Time Is : &quot; + sf.format(currentTrigger.getStartTime()));
+        System.out.println(&quot;End Time Is : &quot; + sf.format(currentTrigger.getEndTime()));
+        
+        JobKey jobKey = currentTrigger.getJobKey();
+        System.out.println(&quot;JobKey info : &quot; + &quot; jobName : &quot; + jobKey.getName()
+                + &quot; jobGroup : &quot; + jobKey.getGroup());
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs swift"><code>package com.myimooc.helloquartz.three;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.Job;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionContext;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionException;
+<span class="hljs-keyword">import</span> org.quartz.JobKey;
+<span class="hljs-keyword">import</span> org.quartz.Trigger;
+
+<span class="hljs-comment">/**
+ * 自定义任务  触发器通用属性
+ * @author ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloJob</span> <span class="hljs-title">implements</span> <span class="hljs-title">Job</span></span>{
+    
+    @<span class="hljs-type">Override</span>
+    <span class="hljs-keyword">public</span> void execute(<span class="hljs-type">JobExecutionContext</span> context) <span class="hljs-keyword">throws</span> <span class="hljs-type">JobExecutionException</span> {
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        <span class="hljs-type">Date</span> date = new <span class="hljs-type">Date</span>();
+        <span class="hljs-type">SimpleDateFormat</span> sf = new <span class="hljs-type">SimpleDateFormat</span>(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Current Exec Time Is : "</span> + sf.format(date));
+        
+        <span class="hljs-type">Trigger</span> currentTrigger = context.getTrigger();
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Start Time Is : "</span> + sf.format(currentTrigger.getStartTime()));
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"End Time Is : "</span> + sf.format(currentTrigger.getEndTime()));
+        
+        <span class="hljs-type">JobKey</span> jobKey = currentTrigger.getJobKey();
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"JobKey info : "</span> + <span class="hljs-string">" jobName : "</span> + jobKey.getName()
+                + <span class="hljs-string">" jobGroup : "</span> + jobKey.getGroup());
+    }
+    
+}
+</code></pre>
+<p>2.HelloScheduler类改造</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.three;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
+/**
+ * 任务调度类  触发器通用属性
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloScheduler {
+    
+    public static void main(String[] args) throws SchedulerException {
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Time Is : &quot; + sf.format(date));
+        
+        // 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定
+        JobDetail jobDeatil = JobBuilder.newJob(HelloJob.class)
+                .withIdentity(&quot;myjob&quot;, &quot;jobgroup1&quot;)// 定义标识符
+                .build();
+        
+        // 获取距离当前时间3秒后的时间
+        date.setTime(date.getTime() + 3000);
+        // 获取距离当前时间6秒后的时间
+        Date endDate = new Date();
+        endDate.setTime(endDate.getTime() + 6000);
+        
+        // 创建一个 Trigger 实例，定义该 job 立即执行，并且每隔两秒重复执行一次，直到永远
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(&quot;myTrigger&quot;,&quot;trigroup1&quot;)// 定义标识符
+                .startAt(date)// 定义3秒后执行
+                .endAt(endDate)// 定义6秒后结束
+                .withSchedule(SimpleScheduleBuilder
+                        .simpleSchedule()
+                        .withIntervalInSeconds(2)
+                        .repeatForever())// 定义执行频度
+                .build();
+        
+        // 创建 Scheduler 实例
+        SchedulerFactory sfact = new StdSchedulerFactory();
+        Scheduler scheduler = sfact.getScheduler();
+        
+        // 绑定 JobDetail 和 trigger
+        scheduler.scheduleJob(jobDeatil, trigger);
+        
+        // 执行任务
+        scheduler.start();
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs swift"><code>package com.myimooc.helloquartz.three;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.JobBuilder;
+<span class="hljs-keyword">import</span> org.quartz.JobDetail;
+<span class="hljs-keyword">import</span> org.quartz.Scheduler;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerException;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerFactory;
+<span class="hljs-keyword">import</span> org.quartz.SimpleScheduleBuilder;
+<span class="hljs-keyword">import</span> org.quartz.Trigger;
+<span class="hljs-keyword">import</span> org.quartz.TriggerBuilder;
+<span class="hljs-keyword">import</span> org.quartz.impl.StdSchedulerFactory;
+
+<span class="hljs-comment">/**
+ * 任务调度类  触发器通用属性
+ * @author ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloScheduler</span> </span>{
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) <span class="hljs-keyword">throws</span> <span class="hljs-type">SchedulerException</span> {
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        <span class="hljs-type">Date</span> date = new <span class="hljs-type">Date</span>();
+        <span class="hljs-type">SimpleDateFormat</span> sf = new <span class="hljs-type">SimpleDateFormat</span>(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Current Time Is : "</span> + sf.format(date));
+        
+        <span class="hljs-comment">// 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定</span>
+        <span class="hljs-type">JobDetail</span> jobDeatil = <span class="hljs-type">JobBuilder</span>.newJob(<span class="hljs-type">HelloJob</span>.<span class="hljs-keyword">class</span>)
+                .withIdentity(<span class="hljs-string">"myjob"</span>, <span class="hljs-string">"jobgroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .build();
+        
+        <span class="hljs-comment">// 获取距离当前时间3秒后的时间</span>
+        date.setTime(date.getTime() + <span class="hljs-number">3000</span>);
+        <span class="hljs-comment">// 获取距离当前时间6秒后的时间</span>
+        <span class="hljs-type">Date</span> endDate = new <span class="hljs-type">Date</span>();
+        endDate.setTime(endDate.getTime() + <span class="hljs-number">6000</span>);
+        
+        <span class="hljs-comment">// 创建一个 Trigger 实例，定义该 job 立即执行，并且每隔两秒重复执行一次，直到永远</span>
+        <span class="hljs-type">Trigger</span> trigger = <span class="hljs-type">TriggerBuilder</span>.newTrigger()
+                .withIdentity(<span class="hljs-string">"myTrigger"</span>,<span class="hljs-string">"trigroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .startAt(date)<span class="hljs-comment">// 定义3秒后执行</span>
+                .endAt(endDate)<span class="hljs-comment">// 定义6秒后结束</span>
+                .withSchedule(<span class="hljs-type">SimpleScheduleBuilder</span>
+                        .simpleSchedule()
+                        .withIntervalInSeconds(<span class="hljs-number">2</span>)
+                        .repeatForever())<span class="hljs-comment">// 定义执行频度</span>
+                .build();
+        
+        <span class="hljs-comment">// 创建 Scheduler 实例</span>
+        <span class="hljs-type">SchedulerFactory</span> sfact = new <span class="hljs-type">StdSchedulerFactory</span>();
+        <span class="hljs-type">Scheduler</span> scheduler = sfact.getScheduler();
+        
+        <span class="hljs-comment">// 绑定 JobDetail 和 trigger</span>
+        scheduler.scheduleJob(jobDeatil, trigger);
+        
+        <span class="hljs-comment">// 执行任务</span>
+        scheduler.start();
+    }
+    
+}
+</code></pre>
+<h2 id="articleHeader8">2-6 SimpleTrigger</h2>
+<p>SimpleTrigger的作用</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="在一个指定时间段内执行一次作业任务
+或是在指定的时间间隔内多次执行作业任务" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>在一个指定时间段内执行一次作业任务
+或是在指定的时间间隔内多次执行作业任务</code></pre>
+<p>需要注意的点</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="重复次数可以为0，正整数或是SimpleTrigger.REPEAT_INDEFINITELY常量值
+重复执行间隔必须为0或长整数
+一旦被指定了endTime参数，那么它会覆盖重复次数参数的效果" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs css"><code>重复次数可以为0，正整数或是<span class="hljs-selector-tag">SimpleTrigger</span><span class="hljs-selector-class">.REPEAT_INDEFINITELY</span>常量值
+重复执行间隔必须为0或长整数
+一旦被指定了<span class="hljs-selector-tag">endTime</span>参数，那么它会覆盖重复次数参数的效果</code></pre>
+<p>代码演示</p>
+<p>1.HelloJob类改造</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.four;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+
+/**
+ * SimpleTrigger 演示
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloJob implements Job{
+    
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Exec Time Is : &quot; + sf.format(date));
+        
+        System.out.println(&quot;Hello World!&quot;);
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs java"><code><span class="hljs-keyword">package</span> com.myimooc.helloquartz.four;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.Job;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionContext;
+<span class="hljs-keyword">import</span> org.quartz.JobExecutionException;
+
+<span class="hljs-comment">/**
+ * SimpleTrigger 演示
+ * <span class="hljs-doctag">@author</span> ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloJob</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Job</span></span>{
+    
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">execute</span><span class="hljs-params">(JobExecutionContext context)</span> <span class="hljs-keyword">throws</span> JobExecutionException </span>{
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        Date date = <span class="hljs-keyword">new</span> Date();
+        SimpleDateFormat sf = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        System.out.println(<span class="hljs-string">"Current Exec Time Is : "</span> + sf.format(date));
+        
+        System.out.println(<span class="hljs-string">"Hello World!"</span>);
+    }
+    
+}
+</code></pre>
+<p>2.HelloScheduler类改造</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.helloquartz.four;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.SimpleTrigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
+/**
+ * SimpleTrigger 演示
+ * @author ZhangCheng on 2017-06-26
+ *
+ */
+public class HelloScheduler {
+    
+    public static void main(String[] args) throws SchedulerException {
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(&quot;Current Time Is : &quot; + sf.format(date));
+        
+        // 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定
+        JobDetail jobDeatil = JobBuilder.newJob(HelloJob.class)
+                .withIdentity(&quot;myjob&quot;, &quot;jobgroup1&quot;)// 定义标识符
+                .build();
+        
+        // 获取距离当前时间4秒钟之后的具体时间
+        date.setTime(date.getTime() + 4000);
+        // 获取距离当前时间6秒钟之后的具体时间
+        Date endDate = new Date();
+        endDate.setTime(endDate.getTime() + 6000);
+        
+        // 距离当前时间4秒钟后首次执行任务，之后每隔2秒钟重复执行一次任务
+        // 知道距离当前时间6秒钟之后为止
+        SimpleTrigger trigger = (SimpleTrigger) TriggerBuilder
+                .newTrigger()
+                .withIdentity(&quot;myTrigger&quot;,&quot;trigroup1&quot;)// 定义标识符
+                .startAt(date)
+                .endAt(endDate)
+                .withSchedule(SimpleScheduleBuilder
+                        .simpleSchedule()
+                        .withIntervalInSeconds(2)
+                        .withRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY))
+                .build();
+         
+        // 创建 Scheduler 实例
+        SchedulerFactory sfact = new StdSchedulerFactory();
+        Scheduler scheduler = sfact.getScheduler();
+        scheduler.scheduleJob(jobDeatil, trigger);
+        scheduler.start();
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs swift"><code>package com.myimooc.helloquartz.four;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.quartz.JobBuilder;
+<span class="hljs-keyword">import</span> org.quartz.JobDetail;
+<span class="hljs-keyword">import</span> org.quartz.Scheduler;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerException;
+<span class="hljs-keyword">import</span> org.quartz.SchedulerFactory;
+<span class="hljs-keyword">import</span> org.quartz.SimpleScheduleBuilder;
+<span class="hljs-keyword">import</span> org.quartz.SimpleTrigger;
+<span class="hljs-keyword">import</span> org.quartz.TriggerBuilder;
+<span class="hljs-keyword">import</span> org.quartz.impl.StdSchedulerFactory;
+
+<span class="hljs-comment">/**
+ * SimpleTrigger 演示
+ * @author ZhangCheng on 2017-06-26
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloScheduler</span> </span>{
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) <span class="hljs-keyword">throws</span> <span class="hljs-type">SchedulerException</span> {
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        <span class="hljs-type">Date</span> date = new <span class="hljs-type">Date</span>();
+        <span class="hljs-type">SimpleDateFormat</span> sf = new <span class="hljs-type">SimpleDateFormat</span>(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Current Time Is : "</span> + sf.format(date));
+        
+        <span class="hljs-comment">// 创建一个 JobDetail 实例，将该实例与 HelloJob 实例绑定</span>
+        <span class="hljs-type">JobDetail</span> jobDeatil = <span class="hljs-type">JobBuilder</span>.newJob(<span class="hljs-type">HelloJob</span>.<span class="hljs-keyword">class</span>)
+                .withIdentity(<span class="hljs-string">"myjob"</span>, <span class="hljs-string">"jobgroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .build();
+        
+        <span class="hljs-comment">// 获取距离当前时间4秒钟之后的具体时间</span>
+        date.setTime(date.getTime() + <span class="hljs-number">4000</span>);
+        <span class="hljs-comment">// 获取距离当前时间6秒钟之后的具体时间</span>
+        <span class="hljs-type">Date</span> endDate = new <span class="hljs-type">Date</span>();
+        endDate.setTime(endDate.getTime() + <span class="hljs-number">6000</span>);
+        
+        <span class="hljs-comment">// 距离当前时间4秒钟后首次执行任务，之后每隔2秒钟重复执行一次任务</span>
+        <span class="hljs-comment">// 知道距离当前时间6秒钟之后为止</span>
+        <span class="hljs-type">SimpleTrigger</span> trigger = (<span class="hljs-type">SimpleTrigger</span>) <span class="hljs-type">TriggerBuilder</span>
+                .newTrigger()
+                .withIdentity(<span class="hljs-string">"myTrigger"</span>,<span class="hljs-string">"trigroup1"</span>)<span class="hljs-comment">// 定义标识符</span>
+                .startAt(date)
+                .endAt(endDate)
+                .withSchedule(<span class="hljs-type">SimpleScheduleBuilder</span>
+                        .simpleSchedule()
+                        .withIntervalInSeconds(<span class="hljs-number">2</span>)
+                        .withRepeatCount(<span class="hljs-type">SimpleTrigger</span>.<span class="hljs-type">REPEAT_INDEFINITELY</span>))
+                .build();
+         
+        <span class="hljs-comment">// 创建 Scheduler 实例</span>
+        <span class="hljs-type">SchedulerFactory</span> sfact = new <span class="hljs-type">StdSchedulerFactory</span>();
+        <span class="hljs-type">Scheduler</span> scheduler = sfact.getScheduler();
+        scheduler.scheduleJob(jobDeatil, trigger);
+        scheduler.start();
+    }
+    
+}
+</code></pre>
+<h2 id="articleHeader9">2-7 CronTrigger</h2>
+<p>CronTrigger的作用</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="基于日历的作业调度器，而不是像SimpleTrigger那样精确指定间隔时间，比SimpleTrigger更常用" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code style="word-break: break-word; white-space: initial;">基于日历的作业调度器，而不是像SimpleTrigger那样精确指定间隔时间，比SimpleTrigger更常用</code></pre>
+<p>Cron表达式</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="用于配置CronTrigger实例
+是由7个子表达式组成的字符串，描述了时间表的详细信息
+格式：[秒][分][小时][日][月][周][年]" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs markdown"><code>用于配置CronTrigger实例
+是由7个子表达式组成的字符串，描述了时间表的详细信息
+格式：[<span class="hljs-string">秒</span>][<span class="hljs-symbol">分</span>][<span class="hljs-string">小时</span>][<span class="hljs-symbol">日</span>][<span class="hljs-string">月</span>][<span class="hljs-symbol">周</span>][<span class="hljs-string">年</span>]</code></pre>
+<p>Cron表达式特殊字符意义对应表</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mJ?w=554&amp;h=165" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>特殊符号解释</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mL?w=554&amp;h=302" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>Cron表达式举例</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mM?w=554&amp;h=153" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>Cron表达式小提示</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="L和W可以一组合使用
+周字段英文字母不区分大小写即MON与mon相同
+利用工具，在线生成
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>L和W可以一组合使用
+周字段英文字母不区分大小写即MON与mon相同
+利用工具，在线生成
+</code></pre>
+<h2 id="articleHeader10">2-8 浅谈Scheduler</h2>
+<p>Scheduler工厂模式</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="所有的Scheduler实例应该由SchedulerFactory来创建" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code style="word-break: break-word; white-space: initial;">所有的Scheduler实例应该由SchedulerFactory来创建</code></pre>
+<p>SchedulerFactory类图</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mN?w=418&amp;h=195" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>回顾Quartz三个核心概念</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="调度器
+任务
+触发器" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>调度器
+任务
+触发器</code></pre>
+<p>示意图</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mO?w=286&amp;h=272" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>Scheduler的创建方式</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mS?w=370&amp;h=157" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>StdSchedulerFactory</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="使用一组参数（Java.util.Properties）来创建和初始化Quartz调度器
+配置参数一般存储在quartz.properties中
+调用getScheduler方法就能创建和初始化调度器对象" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs css"><code>使用一组参数（<span class="hljs-selector-tag">Java</span><span class="hljs-selector-class">.util</span><span class="hljs-selector-class">.Properties</span>）来创建和初始化<span class="hljs-selector-tag">Quartz</span>调度器
+配置参数一般存储在<span class="hljs-selector-tag">quartz</span><span class="hljs-selector-class">.properties</span>中
+调用<span class="hljs-selector-tag">getScheduler</span>方法就能创建和初始化调度器对象</code></pre>
+<p>Scheduler的主要函数</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="// 绑定 jobDetail 和 trigger，将它注册进 Scheduler 当中
+Date scheduleJob(JobDetail jobDetail, Trigger trigger)
+// 启动 Scheduler
+void start()
+// 暂停 Scheduler
+void standby()
+// 关闭 Scheduler
+void shutdown()
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs typescript"><code><span class="hljs-comment">// 绑定 jobDetail 和 trigger，将它注册进 Scheduler 当中</span>
+<span class="hljs-built_in">Date</span> scheduleJob(JobDetail jobDetail, Trigger trigger)
+<span class="hljs-comment">// 启动 Scheduler</span>
+<span class="hljs-built_in">void</span> start()
+<span class="hljs-comment">// 暂停 Scheduler</span>
+<span class="hljs-built_in">void</span> standby()
+<span class="hljs-comment">// 关闭 Scheduler</span>
+<span class="hljs-built_in">void</span> shutdown()
+</code></pre>
+<h2 id="articleHeader11">2-9 QuartzProperties文件</h2>
+<p>quartz.properties组成部分</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="调度器属性
+线程池属性
+作业存储设置
+插件配置" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>调度器属性
+线程池属性
+作业存储设置
+插件配置</code></pre>
+<p>调度器属性</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0mY?w=554&amp;h=223" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>线程池属性</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="threadCount：工作线程数量
+threadPriority：工作线程优先级
+org.quartz.threadPool.class：配置线程池实现类" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs css"><code><span class="hljs-selector-tag">threadCount</span>：工作线程数量
+<span class="hljs-selector-tag">threadPriority</span>：工作线程优先级
+<span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.quartz</span><span class="hljs-selector-class">.threadPool</span><span class="hljs-selector-class">.class</span>：配置线程池实现类</code></pre>
+<p>作业存储设置</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="描述了在调度器实例的生命周期中，Job和Trigger信息是如何被存储的" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code style="word-break: break-word; white-space: initial;">描述了在调度器实例的生命周期中，Job和Trigger信息是如何被存储的</code></pre>
+<p>插件配置</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="满足特定需求用到的Quartz插件的配置
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs"><code>满足特定需求用到的Quartz插件的配置
+</code></pre>
+<h1 id="articleHeader12">第三章：Spring、Quartz大合体</h1>
+<h2 id="articleHeader13">3-1 搭建工程</h2>
+<p>基于Maven创建一个简单的SpringMVC工程，学习时，使用springboot框架。</p>
+<p>项目POM文件</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;groupId&gt;com.myimooc&lt;/groupId&gt;
+  &lt;artifactId&gt;springquartz&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+
+  &lt;name&gt;springquartz&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+  &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;1.5.1.RELEASE&lt;/version&gt;
+        &lt;relativePath /&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-freemarker&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;
+            &lt;artifactId&gt;quartz&lt;/artifactId&gt;
+            &lt;version&gt;2.3.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+  
+  &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.8&lt;/source&gt;
+                    &lt;target&gt;1.8&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+    
+&lt;/project&gt;
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs xml"><code><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://maven.apache.org/POM/4.0.0"</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+  <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.myimooc<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springquartz<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">packaging</span>&gt;</span>jar<span class="hljs-tag">&lt;/<span class="hljs-name">packaging</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>springquartz<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>http://maven.apache.org<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.5.1.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span> /&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">project.reporting.outputEncoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">project.reporting.outputEncoding</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-context-support<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-tx<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-freemarker<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        
+        <span class="hljs-comment">&lt;!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.quartz-scheduler<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>quartz<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+  
+  <span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+    
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span>
+</code></pre>
+<p>项目目录结构</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0ni?w=273&amp;h=395" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<h2 id="articleHeader14">3-2 Quartz和Spring大合体</h2>
+<p>使用Quartz配置作业两种方式</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="MethodInvokingJobDetailFactoryBean
+JobDetailFactoryBean" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs nginx"><code><span class="hljs-attribute">MethodInvokingJobDetailFactoryBean</span>
+JobDetailFactoryBean</code></pre>
+<p>方式一：使用MethodInvokingJobDetailFactoryBean</p>
+<p>1.调用myBean的printMessage方法</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0nx?w=554&amp;h=100" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>2.MyBean类</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0nz?w=437&amp;h=123" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>方式二：使用JobDetailFactoryBean</p>
+<p>1.需要给作业传递数据，想要更加灵活的话就是用这种方式</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0nF?w=554&amp;h=163" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>2.FirstScheduleJob类</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0nG?w=554&amp;h=249" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>3.AnotherBean类</p>
+<p><span class="img-wrap"><img data-src="/img/bVP0nJ?w=468&amp;h=138" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/squares.svg" alt="clipboard.png" title="clipboard.png" style="cursor: pointer;"></span></p>
+<p>代码演示：</p>
+<p>演示说明：教学基于xml进行配置，学习时基于javaconfig进行配置。</p>
+<p>1.编写MyBean类</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.springquartz.quartz;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.stereotype.Component;
+
+/**
+ * 方式一：使用MethodInvokingJobDetailFactoryBean 演示
+ * @author ZhangCheng on 2017-06-28
+ *
+ */
+@Component
+public class MyBean {
+    
+    public void printMessage(){
+        
+        // 打印当前的执行时间，格式为2017-01-01 00:00:00
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        
+        System.out.println(&quot;MyBean Executes!&quot; + sf.format(date));
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs java"><code><span class="hljs-keyword">package</span> com.myimooc.springquartz.quartz;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+
+<span class="hljs-comment">/**
+ * 方式一：使用MethodInvokingJobDetailFactoryBean 演示
+ * <span class="hljs-doctag">@author</span> ZhangCheng on 2017-06-28
+ *
+ */</span>
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyBean</span> </span>{
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printMessage</span><span class="hljs-params">()</span></span>{
+        
+        <span class="hljs-comment">// 打印当前的执行时间，格式为2017-01-01 00:00:00</span>
+        Date date = <span class="hljs-keyword">new</span> Date();
+        SimpleDateFormat sf = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        
+        System.out.println(<span class="hljs-string">"MyBean Executes!"</span> + sf.format(date));
+    }
+    
+}
+</code></pre>
+<p>2.编写AnotherBean类</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.springquartz.quartz;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.stereotype.Component;
+
+/**
+ * 方式二：使用JobDetailFactoryBean 演示
+ * @author ZhangCheng on 2017-06-28
+ *
+ */
+@Component
+public class AnotherBean {
+    
+    public void printAnotherMessage(){
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        
+        System.out.println(&quot;I am AnotherBean.&quot; + sf.format(date));
+    }
+    
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs java"><code><span class="hljs-keyword">package</span> com.myimooc.springquartz.quartz;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+
+<span class="hljs-comment">/**
+ * 方式二：使用JobDetailFactoryBean 演示
+ * <span class="hljs-doctag">@author</span> ZhangCheng on 2017-06-28
+ *
+ */</span>
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AnotherBean</span> </span>{
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printAnotherMessage</span><span class="hljs-params">()</span></span>{
+        Date date = <span class="hljs-keyword">new</span> Date();
+        SimpleDateFormat sf = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        
+        System.out.println(<span class="hljs-string">"I am AnotherBean."</span> + sf.format(date));
+    }
+    
+}
+</code></pre>
+<p>3.编写FirstScheduledJob类</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.springquartz.quartz;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+/**
+ * 方式二：使用JobDetailFactoryBean 演示
+ * @author ZhangCheng on 2017-06-28
+ *
+ */
+public class FirstScheduledJob extends QuartzJobBean {
+    
+    private AnotherBean anotherBean;
+    
+    public void setAnotherBean(AnotherBean anotherBean) {
+        this.anotherBean = anotherBean;
+    }
+
+    @Override
+    protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        
+        System.out.println(&quot;FirstScheduledJob Excutes!&quot; + sf.format(date));
+        this.anotherBean.printAnotherMessage();
+    }
+
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs scala"><code><span class="hljs-keyword">package</span> com.myimooc.springquartz.quartz;
+
+<span class="hljs-keyword">import</span> java.text.<span class="hljs-type">SimpleDateFormat</span>;
+<span class="hljs-keyword">import</span> java.util.<span class="hljs-type">Date</span>;
+
+<span class="hljs-keyword">import</span> org.quartz.<span class="hljs-type">JobExecutionContext</span>;
+<span class="hljs-keyword">import</span> org.quartz.<span class="hljs-type">JobExecutionException</span>;
+<span class="hljs-keyword">import</span> org.springframework.scheduling.quartz.<span class="hljs-type">QuartzJobBean</span>;
+
+<span class="hljs-comment">/**
+ * 方式二：使用JobDetailFactoryBean 演示
+ * @author ZhangCheng on 2017-06-28
+ *
+ */</span>
+public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FirstScheduledJob</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">QuartzJobBean</span> </span>{
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-type">AnotherBean</span> anotherBean;
+    
+    public void setAnotherBean(<span class="hljs-type">AnotherBean</span> anotherBean) {
+        <span class="hljs-keyword">this</span>.anotherBean = anotherBean;
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">protected</span> void executeInternal(<span class="hljs-type">JobExecutionContext</span> arg0) <span class="hljs-keyword">throws</span> <span class="hljs-type">JobExecutionException</span> {
+        <span class="hljs-type">Date</span> date = <span class="hljs-keyword">new</span> <span class="hljs-type">Date</span>();
+        <span class="hljs-type">SimpleDateFormat</span> sf = <span class="hljs-keyword">new</span> <span class="hljs-type">SimpleDateFormat</span>(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+        
+        <span class="hljs-type">System</span>.out.println(<span class="hljs-string">"FirstScheduledJob Excutes!"</span> + sf.format(date));
+        <span class="hljs-keyword">this</span>.anotherBean.printAnotherMessage();
+    }
+
+}
+</code></pre>
+<p>4.编写QuartzConfig类</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="package com.myimooc.springquartz.config;
+
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Trigger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
+import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
+
+import com.myimooc.springquartz.quartz.AnotherBean;
+import com.myimooc.springquartz.quartz.FirstScheduledJob;
+import com.myimooc.springquartz.quartz.MyBean;
+
+/**
+ * Quartz 配置类
+ * @author ZhangCheng on 2017-06-28
+ *
+ */
+@Configuration
+public class QuartzConfig {
+    
+    @Autowired
+    private MyBean myBean;
+    
+    @Autowired
+    private AnotherBean anotherBean;
+    
+    /**
+     * 方式一：使用MethodInvokingJobDetailFactoryBean
+     * @return
+     */
+    @Bean
+    public MethodInvokingJobDetailFactoryBean methodInvokingJobDetailFactoryBean(){
+        MethodInvokingJobDetailFactoryBean mb = new MethodInvokingJobDetailFactoryBean();
+        mb.setTargetObject(myBean);// 指定要运行的类
+        mb.setTargetMethod(&quot;printMessage&quot;);// 指定要允许类中的那个方法
+        return mb;
+    }
+    
+    /**
+     * 方式二：使用JobDetailFactoryBean
+     * @return
+     */
+    @Bean
+    public JobDetailFactoryBean jobDetailFactoryBean(){
+        JobDetailFactoryBean  jb= new JobDetailFactoryBean();
+        jb.setJobClass(FirstScheduledJob.class);// 指定要运行的类
+        JobDataMap jobDataMap = new JobDataMap();
+        jobDataMap.put(&quot;anotherBean&quot;, anotherBean);
+        
+        jb.setJobDataMap(jobDataMap);// 设置传入自定义参数
+        jb.setDurability(true);
+        return jb;
+    }
+    
+    /**
+     * 配置 SimpleTriggerFactoryBean
+     * @return
+     */
+    @Bean
+    public SimpleTriggerFactoryBean simpleTriggerFactoryBean(){
+        SimpleTriggerFactoryBean sb = new SimpleTriggerFactoryBean();
+        sb.setJobDetail(methodInvokingJobDetailFactoryBean().getObject());// 设置需要绑定的 jobDetail
+        sb.setStartDelay(1000L);// 距离当前时间1秒后执行
+        sb.setRepeatInterval(2000L);// 之后每隔2秒执行一次
+        return sb;
+    }
+    
+    /**
+     * 配置 SimpleTriggerFactoryBean
+     * @return
+     */
+    @Bean
+    public CronTriggerFactoryBean cronTriggerFactoryBean(){
+        CronTriggerFactoryBean cb = new CronTriggerFactoryBean();
+        cb.setJobDetail(jobDetailFactoryBean().getObject());// 设置需要绑定的 jobDetail
+        cb.setStartDelay(1000L);// 距离当前时间1秒后执行
+        cb.setCronExpression(&quot;0/5 * * ? * *&quot;);// 设置 Cron 表达式，之后每隔5秒执行一次
+        return cb;
+    }
+    
+    /**
+     * 配置 SchedulerFactoryBean
+     * @return
+     */
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean(){
+        SchedulerFactoryBean sb= new SchedulerFactoryBean();
+        // 配置 JobDetails
+        JobDetail[] jobDetails = new JobDetail[2];
+        jobDetails[0] = methodInvokingJobDetailFactoryBean().getObject();
+        jobDetails[1] = jobDetailFactoryBean().getObject();
+        sb.setJobDetails(jobDetails);
+        
+        // 配置 Trigger
+        Trigger[] triggers = new Trigger[2];
+        triggers[0] = simpleTriggerFactoryBean().getObject();
+        triggers[1] = cronTriggerFactoryBean().getObject();
+        sb.setTriggers(triggers);
+        return sb;
+        
+    }
+}
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs java"><code><span class="hljs-keyword">package</span> com.myimooc.springquartz.config;
+
+<span class="hljs-keyword">import</span> org.quartz.JobDataMap;
+<span class="hljs-keyword">import</span> org.quartz.JobDetail;
+<span class="hljs-keyword">import</span> org.quartz.Trigger;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.scheduling.quartz.CronTriggerFactoryBean;
+<span class="hljs-keyword">import</span> org.springframework.scheduling.quartz.JobDetailFactoryBean;
+<span class="hljs-keyword">import</span> org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
+<span class="hljs-keyword">import</span> org.springframework.scheduling.quartz.SchedulerFactoryBean;
+<span class="hljs-keyword">import</span> org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
+
+<span class="hljs-keyword">import</span> com.myimooc.springquartz.quartz.AnotherBean;
+<span class="hljs-keyword">import</span> com.myimooc.springquartz.quartz.FirstScheduledJob;
+<span class="hljs-keyword">import</span> com.myimooc.springquartz.quartz.MyBean;
+
+<span class="hljs-comment">/**
+ * Quartz 配置类
+ * <span class="hljs-doctag">@author</span> ZhangCheng on 2017-06-28
+ *
+ */</span>
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QuartzConfig</span> </span>{
+    
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> MyBean myBean;
+    
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> AnotherBean anotherBean;
+    
+    <span class="hljs-comment">/**
+     * 方式一：使用MethodInvokingJobDetailFactoryBean
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> MethodInvokingJobDetailFactoryBean <span class="hljs-title">methodInvokingJobDetailFactoryBean</span><span class="hljs-params">()</span></span>{
+        MethodInvokingJobDetailFactoryBean mb = <span class="hljs-keyword">new</span> MethodInvokingJobDetailFactoryBean();
+        mb.setTargetObject(myBean);<span class="hljs-comment">// 指定要运行的类</span>
+        mb.setTargetMethod(<span class="hljs-string">"printMessage"</span>);<span class="hljs-comment">// 指定要允许类中的那个方法</span>
+        <span class="hljs-keyword">return</span> mb;
+    }
+    
+    <span class="hljs-comment">/**
+     * 方式二：使用JobDetailFactoryBean
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> JobDetailFactoryBean <span class="hljs-title">jobDetailFactoryBean</span><span class="hljs-params">()</span></span>{
+        JobDetailFactoryBean  jb= <span class="hljs-keyword">new</span> JobDetailFactoryBean();
+        jb.setJobClass(FirstScheduledJob.class);<span class="hljs-comment">// 指定要运行的类</span>
+        JobDataMap jobDataMap = <span class="hljs-keyword">new</span> JobDataMap();
+        jobDataMap.put(<span class="hljs-string">"anotherBean"</span>, anotherBean);
+        
+        jb.setJobDataMap(jobDataMap);<span class="hljs-comment">// 设置传入自定义参数</span>
+        jb.setDurability(<span class="hljs-keyword">true</span>);
+        <span class="hljs-keyword">return</span> jb;
+    }
+    
+    <span class="hljs-comment">/**
+     * 配置 SimpleTriggerFactoryBean
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> SimpleTriggerFactoryBean <span class="hljs-title">simpleTriggerFactoryBean</span><span class="hljs-params">()</span></span>{
+        SimpleTriggerFactoryBean sb = <span class="hljs-keyword">new</span> SimpleTriggerFactoryBean();
+        sb.setJobDetail(methodInvokingJobDetailFactoryBean().getObject());<span class="hljs-comment">// 设置需要绑定的 jobDetail</span>
+        sb.setStartDelay(<span class="hljs-number">1000L</span>);<span class="hljs-comment">// 距离当前时间1秒后执行</span>
+        sb.setRepeatInterval(<span class="hljs-number">2000L</span>);<span class="hljs-comment">// 之后每隔2秒执行一次</span>
+        <span class="hljs-keyword">return</span> sb;
+    }
+    
+    <span class="hljs-comment">/**
+     * 配置 SimpleTriggerFactoryBean
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CronTriggerFactoryBean <span class="hljs-title">cronTriggerFactoryBean</span><span class="hljs-params">()</span></span>{
+        CronTriggerFactoryBean cb = <span class="hljs-keyword">new</span> CronTriggerFactoryBean();
+        cb.setJobDetail(jobDetailFactoryBean().getObject());<span class="hljs-comment">// 设置需要绑定的 jobDetail</span>
+        cb.setStartDelay(<span class="hljs-number">1000L</span>);<span class="hljs-comment">// 距离当前时间1秒后执行</span>
+        cb.setCronExpression(<span class="hljs-string">"0/5 * * ? * *"</span>);<span class="hljs-comment">// 设置 Cron 表达式，之后每隔5秒执行一次</span>
+        <span class="hljs-keyword">return</span> cb;
+    }
+    
+    <span class="hljs-comment">/**
+     * 配置 SchedulerFactoryBean
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> SchedulerFactoryBean <span class="hljs-title">schedulerFactoryBean</span><span class="hljs-params">()</span></span>{
+        SchedulerFactoryBean sb= <span class="hljs-keyword">new</span> SchedulerFactoryBean();
+        <span class="hljs-comment">// 配置 JobDetails</span>
+        JobDetail[] jobDetails = <span class="hljs-keyword">new</span> JobDetail[<span class="hljs-number">2</span>];
+        jobDetails[<span class="hljs-number">0</span>] = methodInvokingJobDetailFactoryBean().getObject();
+        jobDetails[<span class="hljs-number">1</span>] = jobDetailFactoryBean().getObject();
+        sb.setJobDetails(jobDetails);
+        
+        <span class="hljs-comment">// 配置 Trigger</span>
+        Trigger[] triggers = <span class="hljs-keyword">new</span> Trigger[<span class="hljs-number">2</span>];
+        triggers[<span class="hljs-number">0</span>] = simpleTriggerFactoryBean().getObject();
+        triggers[<span class="hljs-number">1</span>] = cronTriggerFactoryBean().getObject();
+        sb.setTriggers(triggers);
+        <span class="hljs-keyword">return</span> sb;
+        
+    }
+}
+</code></pre>
+<h1 id="articleHeader15">第四章：课程总结</h1>
+<h2 id="articleHeader16">4-1 课程总结</h2>
+<p>课程回顾</p>
+<div class="widget-codetool" style="display:none;">
+      <div class="widget-codetool--inner">
+      <span class="selectCode code-tool" data-toggle="tooltip" data-placement="top" title="" data-original-title="全选"></span>
+      <span type="button" class="copyCode code-tool" data-toggle="tooltip" data-placement="top" data-clipboard-text="Timer
+Quartz
+Quartz&amp;Spring融合
+" title="" data-original-title="复制"></span>
+      </div>
+      </div><pre class="hljs nginx"><code><span class="hljs-attribute">Timer</span>
+Quartz
+Quartz&amp;Spring融合
+</code></pre>
+
+                </div>
+                                                
+                <div class="clearfix mt10">
+                    <ul class="article-operation list-inline pull-left mt15"><li><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="mb5" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/creativecommons-cc.svg" height="20"></a></li><li class="dropdown js__content-ops hidden-xs" data-module="article" data-id="1190000009972187" data-typetext="文章"><a href="javascript:void(0);" class="dropdown-toggle text-muted" data-toggle="dropdown"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a><ul class="dropdown-menu dropdown-menu-left"><li><a href="https://segmentfault.com/a/1190000009972187#911" data-toggle="modal" data-target="#911" data-action="report">举报</a></li></ul></li></ul>
+                    <div class="pull-right mt-10 hidden-xs">
+                        <div class="widget-share__full" data-text="慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结" data-url="https://segmentfault.com/a/1190000009972187" data-shorturl="http://sfau.lt/b5P0nT"><div class="widget-share-network sharer-0" style="display: block;"><ul class="sn-inline"><li data-network="weibo"><a href="javascript:void(0);" class="entypo-weibo icon-sn-weibo share-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至新浪微博">新浪微博</a></li><li data-network="wechart"><a href="javascript:void(0);" class="entypo-wechart icon-sn-weixin share-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至微信">微信</a></li><li data-network="twitter"><a href="javascript:void(0);" class="entypo-twitter icon-sn-twitter share-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至 Twitter">Twitter</a></li><li data-network="facebook"><a href="javascript:void(0);" class="entypo-facebook icon-sn-facebook share-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至 Facebook">Facebook</a></li></ul></div><a type="button" class="btn btn-sm shareMore btn-sn-more" data-toggle="popover" data-placement="top" data-url="https://segmentfault.com/a/1190000009972187" data-shorturl="http://sfau.lt/b5P0nT"><span class="icon-sn-dotted" data-original-title="" title=""></span><strong class="visible-xs-inline">•••</strong></a></div>
+
+
+                    </div>
+                </div>
+                <div class="mt10 text-center mb30"><button type="button" id="mainLike" data-id="1190000009972187" class="btn btn-success btn-lg mr15 "><span id="mainLikeText">赞</span>&nbsp;&nbsp;<span class="seprator">|</span>&nbsp;&nbsp;
+                                <span id="mainLikeNum">5 </span></button><button type="button" id="mainBookmark" data-type="article" data-id="1190000009972187" class="btn btn-default btn-lg "><span id="mainBookmarkText">收藏</span>&nbsp;&nbsp;<span class="seprator">|</span>&nbsp;&nbsp;<span id="mainBookmarkNum">9</span></button><br><button type="button" data-id="1190000009972187" class="btn btn-danger btn-lg mt15 article__reward-btn">
+                                    赞赏支持
+                                </button></div><div class="mt30 mb30 text-center article__reward-info"><span class="mr10">如果觉得我的文章对你有用，请随意赞赏</span></div>                
+                                <script type="text/javascript">
+                    OA_show(3);
+                </script><div style="text-align: center; line-height: 0; background: #EEE"><a href="https://sponsor.segmentfault.com/ck.php?oaparams=2__bannerid=114__zoneid=3__cb=eecc981b8d__oadest=https%3A%2F%2Fdwz.cn%2F9w7Sxc4P" target="_blank"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/c914f3eabb6906e799b522e6a2c673db.png" width="728" height="90" alt="" title="" border="0"></a><div id="beacon_eecc981b8d" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(1).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div></div>
+
+
+                <h4 class="pt20 mb15 mt0 border-top">你可能感兴趣的</h4>
+
+                
+                <div class="mb15 block">
+                    <script type="text/javascript">
+                        OA_show(4);
+                    </script><div id="beacon_4cc51ce22f" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(2).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+
+                </div>
+
+                                <div id="paradigm-article-related"><div class="recommend-post mb30"><ul class="widget-links"><li><a href="http://segmentfault.com/a/1190000009542398" title="慕课网_《Java定时任务调度工具详解之Timer篇》学习总结" target="_blank">慕课网_《Java定时任务调度工具详解之Timer篇》学习总结</a><span class="text-muted">妙手空空</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/java">java</a></li><li><a href="http://segmentfault.com/a/1190000010980308" title="慕课网_《模式的秘密之单例模式》学习总结" target="_blank">慕课网_《模式的秘密之单例模式》学习总结</a><span class="text-muted">妙手空空</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">单例模式</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/java">java</a></li><li><a href="http://segmentfault.com/a/1190000015492260" title="记一次Quartz重复调度的问题排查" target="_blank">记一次Quartz重复调度的问题排查</a><span class="text-muted">Lavender</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/quartz">quartz</a></li><li><a href="http://segmentfault.com/a/1190000015708647" title="【Java定时任务调度工具】Quartz" target="_blank">【Java定时任务调度工具】Quartz</a><span class="text-muted">gcusky</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E5%AE%9A%E6%97%B6%E5%99%A8">定时器</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1">定时任务</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/java">java</a></li><li><a href="http://segmentfault.com/a/1190000010178618" title="慕课网_《Hibernate初探之多对多映射》学习总结" target="_blank">慕课网_《Hibernate初探之多对多映射》学习总结</a><span class="text-muted">妙手空空</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/hibernate">hibernate</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/java">java</a></li><li><a href="http://segmentfault.com/a/1190000010981040" title="慕课网_《模式的秘密之策略模式》学习总结" target="_blank">慕课网_《模式的秘密之策略模式》学习总结</a><span class="text-muted">妙手空空</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F">策略模式</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/java">java</a></li><li><a href="http://segmentfault.com/a/1190000010980982" title="慕课网_《模式的秘密之责任链模式》学习总结" target="_blank">慕课网_《模式的秘密之责任链模式》学习总结</a><span class="text-muted">妙手空空</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F">责任链模式</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a><a class="tag" taget="_blank" href="https://segmentfault.com/t/java">java</a></li><li><a href="http://segmentfault.com/a/1190000010106291" title="慕课网_《细说多线程之Thread VS Runnable》学习总结" target="_blank">慕课网_《细说多线程之Thread VS Runnable》学习总结</a><span class="text-muted">妙手空空</span><a class="tag" taget="_blank" href="https://segmentfault.com/t/java">java</a></li></ul></div></div>
+
+                
+        <div class="comments--news comments--default comments--article 
+    " data-id="1190000009972187" data-user-id="" data-author-id="1030000007413855 " data-is-admin="null" id="goToReplyArea">
+                    <div class="mb10 clearfix">
+                <strong class="comments-stat pull-left mr10">1 条评论</strong>
+
+                                                    <div class="btn-group btn-group-xs pull-right comments-sort btn-group-menu" role="menu">
+                        <a href="javascript:;" class="btn btn-default active" data-sort="default">默认排序</a>
+                        <a href="javascript:;" class="btn btn-default" data-sort="desc">时间排序</a>
+                    </div>
+                            </div>
+                <div class="comments-container">
+                                <div class="comments-list">
+                <div class="comments-item" data-id="1050000013784566">
+            <div class="pull-left">
+                <a href="https://segmentfault.com/u/amdyteng" target="_blank"><img class="avatar-32 " src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/user-64.png" alt=""></a>
+            </div>
+            <div class="comments-content">
+                <div class="comment-trigger">
+                    <div class="pull-right comment-option">
+                                                <a href="https://segmentfault.com/a/1190000009972187#911" class="ml10" data-toggle="modal" data-target="#911" data-action="report" data-action-text="举报" data-module="comment" data-id="1050000013784566" data-typetext="评论" data-placement="top" title="举报"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span></a>
+                                            </div>
+                    <strong><a target="_blank" href="https://segmentfault.com/u/amdyteng">Amdyteng</a></strong>
+                    <span class="comments-isAuthor hide"></span>
+                    <span class="comments-date">  ·  2018年03月16日</span>
+                </div>
+
+                <div class="fmt mb10"><p>很好嘛</p></div>
+
+                <form action="https://segmentfault.com/api/comment/1050000013784566/edit">
+                    <div class="form-group">
+                        <textarea class="editTextarea mono form-control mb10 hidden" rows="1" name="text" style="height: 28px; overflow: hidden; word-wrap: break-word;">很好嘛</textarea>
+                    </div>
+                </form>
+
+                <p class="comment-ops not-reply">
+                    <span class="comments-zan ">
+                        <i class="fa fa-thumbs-up mr4" aria-hidden="true"></i>
+                        <span class="comments-zan-text">赞</span>
+                        <span class="comments-zan-value"></span>
+                    </span>
+                    
+                    <span class="ml15 comments-reply-btn">回复</span>
+
+                    <span class="pull-right editBtns hidden">
+                      <button class="btn btn-link btn-xs cancel" type="button">取消</button>
+                      <button class="btn btn-primary btn-xs edit ml10" type="button">保存</button>
+                    </span>
+                </p>
+
+                <div class="reply-list reply-list--empty">
+
+                    
+                    <div class="reply-item reply-item--ops" data-obj="obj">
+                        <a class="reply-inner-btn" href="javascript:;">添加回复</a>
+                        
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+            </div>
+    <div class="comments-loading hide">载入中...</div>
+        <div class="comments-more hide"><a href="javascript:;">显示更多评论</a></div>
+    
+
+                                    <div class="comments-box" id="goToReplyEditor">
+                <div class="pull-left">
+                    <img class="avatar-32 " src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/user-128.png" alt="">
+                </div>
+                <div class="comments-box-content">
+                    <form action="https://segmentfault.com/api/article/1190000009972187/comments/add">
+                        <div class="form-group mb0">
+                            <textarea name="text" rows="3" class="form-control" placeholder="文明社会，理性评论"></textarea>
+                            <div class="mt15 text-right">
+                                <button type="button" class="hide"></button>
+                                <button class=" btn btn-primary" type="button">发布评论</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+                                                        </div>
+    </div>
+
+
+                                    
+                
+                
+
+            </div><!-- /.main -->
+
+
+            <div class="col-md-3 side hidden-sm hidden-xs mt30" style="height: 18000px;">
+                                                
+                <div class="mb25 hidden-md hidden-sm hidden-xs">
+    <img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/20190323.png" alt="Planets" usemap="#gridsMap" width="255" height="136">
+    <map name="gridsMap" id="gridsMap"><area shape="rect" target="_blank" onmouseover="SFGridAd.d(this)" onmouseout="SFGridAd.e(this)" onclick="SFGridAd.c(1750000018316831)" coords="102,68,153,85" href="https://www.fundebug.com/?utm_source=sf_lattice_ad" stitle="一行代码搞定BUG监控"><area shape="rect" target="_blank" onmouseover="SFGridAd.d(this)" onmouseout="SFGridAd.e(this)" onclick="SFGridAd.c(1750000018502421)" coords="221,0,255,34" href="https://www.3tee.cn/index.html?source=segmentfault" stitle="纯浏览器视频会议，兼容微信小程序，快速嵌入，浙江大华股份等都在用"><area shape="rect" target="_blank" onmouseover="SFGridAd.d(this)" onmouseout="SFGridAd.e(this)" onclick="SFGridAd.c(1750000018548220)" coords="34,34,102,51" href="https://www.kuibuke.com/exam" stitle="刷遍bat面试题，大厂offer不用愁"><area shape="rect" target="_blank" onmouseover="SFGridAd.d(this)" onmouseout="SFGridAd.e(this)" onclick="SFGridAd.c(1750000018571814)" coords="0,0,34,34" href="https://enhancer.io/" stitle="全球最快系统开发方式！一次开发，多端适配，不服来用"></map>
+    <div style="text-align: center;"><a style="text-align:center; color:#9E9E9E; font-size:12px" href="https://segmentfault.com/sponsor">想在上方展示你的广告？</a></div>
+            <script async="" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/20190323.js.下载"></script>
+    </div>
+
+                                <style>
+                    .job-recommend-area a:not(:last-of-type) {margin-bottom:10px; display: block}
+                    .job-recommend-area a:hover {text-decoration: none;}
+                </style>
+                <div class="hidden-md">
+                    <div class="job-recommend">
+                      <h3 class="job-title">推广链接</h3>
+                      <div class="job-recommend-area">
+                                                <script type="text/javascript">
+                            OA_show(7);
+                            OA_show(9);
+                            OA_show(10);
+                            OA_show(15);
+                            OA_show(16);
+                        </script><a href="https://sponsor.segmentfault.com/ck.php?oaparams=2__bannerid=57__zoneid=7__cb=8c5975ead1__oadest=https%3A%2F%2Fsegmentfault.com%2Fls%2F1650000011387052" target="_blank"><strong> Java 微服务实践课</strong><br>
+<small style="color: #999">上千人学习过的微服务实栈课</small></a><div id="beacon_8c5975ead1" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(3).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+<a href="https://sponsor.segmentfault.com/ck.php?oaparams=2__bannerid=56__zoneid=9__cb=8334b65f07__oadest=https%3A%2F%2Fsegmentfault.com%2Fls%2F1650000011318558" target="_blank"><strong>大神的PHP 进阶之路</strong><br>
+<small style="color: #999">亿级 PV 项目的架构梳理，性能提升实战</small></a><div id="beacon_8334b65f07" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(4).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+<a href="https://sponsor.segmentfault.com/ck.php?oaparams=2__bannerid=111__zoneid=10__cb=16a78a4061__oadest=https%3A%2F%2Fdwz.cn%2F9w7Sxc4P" target="_blank"><strong>Android 进阶之路</strong><br>
+<small style="color: #999"><span style="color: #F7A700">8 个月带你蜕变成为高级工程师！</span></small></a><div id="beacon_16a78a4061" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(5).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+<div id="beacon_3b8513118f" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(6).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+<div id="beacon_5c6341989f" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(7).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+
+                      </div>
+                    </div>
+                    <style>
+                    .job-recommend {margin-bottom: 30px;}
+                    .job-title {
+                        font-size: 14px;
+                        color: #017E66;
+                        font-weight: 500;
+                        background: #BFE6D7;
+                        margin: 0;
+                        padding-top: 6px;
+                        padding-bottom: 6px;
+                        text-align: center;
+                    }
+                    .job-recommend-area {
+                      padding: 13px;
+                      border: 3px solid #EBF7F3;
+                      border-top: none;
+                    }
+                    </style>
+                    
+                                    </div>
+
+                                
+                <div class="hidden-md ad-should-be-fixed stuckMenu isStuck" style="display: block; position: fixed; top: 10px;">
+                    <div class="mb25 block">
+                        <script type="text/javascript">
+                            OA_show(1);
+                        </script><a href="https://sponsor.segmentfault.com/ck.php?oaparams=2__bannerid=112__zoneid=1__cb=3844cfcee4__oadest=https%3A%2F%2Fcloud.baidu.com%2Fcampaign%2Fpurchase-2019%2Findex.html%3Ftrack%3Dcp%3Adsp%7Cpf%3Apc%7Cpp%3Achui-sifou-huodong-19caigouji-BCC-shouyecelanjuxing-190313%7Cpu%3Ashouyecelanjuxing-tupian%7Cci%3A2019cgj%7Ckw%3A2107388" target="_blank"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/8552c525b1f77f394dc07b64cd71cf11.png" width="255" height="213" alt="" title="" border="0"></a><div id="beacon_3844cfcee4" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/lg(8).php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+
+                    </div>
+                </div>
+                <div class="post-nav hidden-xs side-outline hidden-sm" style="display: block; position: sticky; top: 238px; margin-top: 213px;">
+                    <div class="panel panel-default widget-outline">
+                        <div class="panel-heading">目录</div>
+                        <div class="panel-body">
+                            <div class="nav-body" style="overflow: scroll; top: 0px; height: 637px;">
+                                <div class="highlight-title" style="display: block; top: 81px; height: 27px;"></div>
+                                <ul class="articleIndex"><li class=""><a href="https://segmentfault.com/a/1190000009972187#articleHeader0">第一章：课程介绍</a></li><li style="list-style:none;"><ul><li class=""><a href="https://segmentfault.com/a/1190000009972187#articleHeader1">1-1 初识Quartz</a></li></ul></li><li class=""><a href="https://segmentfault.com/a/1190000009972187#articleHeader2">第二章：Quartz详解</a></li><li style="list-style:none;"><ul><li class="active"><a href="https://segmentfault.com/a/1190000009972187#articleHeader3">2-1 第一个Quartz程序</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader4">2-2 浅谈Job&amp;JobDetail</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader5">2-3 浅谈JobExecutionContext&amp;JobDataMap（上）</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader6">2-4 浅谈JobExecutionContext&amp;JobDataMap（下）</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader7">2-5 浅谈Trigger</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader8">2-6 SimpleTrigger</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader9">2-7 CronTrigger</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader10">2-8 浅谈Scheduler</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader11">2-9 QuartzProperties文件</a></li></ul></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader12">第三章：Spring、Quartz大合体</a></li><li style="list-style:none;"><ul><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader13">3-1 搭建工程</a></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader14">3-2 Quartz和Spring大合体</a></li></ul></li><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader15">第四章：课程总结</a></li><li style="list-style:none;"><ul><li><a href="https://segmentfault.com/a/1190000009972187#articleHeader16">4-1 课程总结</a></li></ul></li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div><!-- /.side -->
+        </div>
+    </div>
+</div>
+
+<div id="shareToWeiboModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">分享</h4>
+            </div>
+            <div class="modal-body">
+                <p class="sfModal-content">
+                    分享到微博？
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default dont-likeweibo" data-dismiss="modal">取消</button>
+                <a href="https://segmentfault.com/a/1190000009972187" id="shareLink" class="btn btn-primary done-btn" target="_blank" onclick="$(&#39;#shareToWeiboModal&#39;).modal(&#39;hide&#39;)">分享</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal widget-911" id="911" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal" type="button">
+          <span aria-hidden="true">×</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title"><span data-model="action"></span><span data-model="type"></span></h4>
+      </div>
+      <div class="modal-body">
+        <form id="reportForm">
+          <!-- 后台返回信息 -->
+          <p class="alert alert-warning" data-model="returnMsg"></p>
+          <div data-role="base">
+            <p>
+              <strong class="required">我要<span data-model="action"></span>该<span data-model="type"></span>，理由是：</strong>
+            </p>
+            <ul class="list-unstyled" data-model="list"></ul>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default pull-left" type="button" data-role="back" style="display:none">返回重选</button>
+                <button class="btn btn-default" data-dismiss="modal" type="button">取消</button>
+        <button class="btn btn-primary" data-role="submit" type="button">提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal widget-seo" id="seo" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title"><span data-model="action"></span><span data-model="type"></span></h4>
+            </div>
+            <div class="modal-body">
+                <form id="seoForm">
+                    <!-- 后台返回信息 -->
+                    <p class="alert alert-warning" data-model="returnMsg" style="display: none;"></p>
+                    <div data-role="base">
+                        <div class="form-group">
+                            <label>SEO标题：</label><textarea style="min-height: 35px; width: 100%; max-height: 132px; overflow: hidden; overflow-wrap: break-word; height: 32px;" name="title" class="form-control" rows="1" placeholder="请输入SEO标题"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>SEO描述：</label><textarea style="min-height: 35px; max-height: 132px; overflow: hidden; overflow-wrap: break-word; height: 32px;" name="desc" class="form-control" rows="1" placeholder="请输入SEO描述"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>SEO keywords：</label><textarea style="min-height: 35px; max-height: 132px; overflow: hidden; overflow-wrap: break-word; height: 32px;" name="keywords" class="form-control" rows="1" placeholder="请输入SEO keywords"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">取消</button>
+                <button class="btn btn-primary" data-role="submit" type="button">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+    <div id="loginBanner" class="hidden-sm hidden-xs loginBanner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-7">
+                <h1 class="title">在 SegmentFault，学习技能、解决问题</h1>
+                <p class="desc">每个月，我们帮助 1000 万的开发者解决各种各样的技术问题。并助力他们在技术能力、职业生涯、影响力上获得提升。</p>
+            </div>
+            <div class="col-lg-3 col-lg-offset-3 col-md-4 col-md-offset-1">
+                <form class="register-form clearfix" action="https://segmentfault.com/api/user/phone/register">
+
+                    
+                    <a href="https://segmentfault.com/user/register" class="SFLogin btn btn-lg btn-primary mr15">免费注册</a>
+                    <a href="https://segmentfault.com/user/login" class="SFRegister btn btn-lg btn-primary">立即登录</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+
+<footer id="footer">
+    <div class="container">
+        <div class="row hidden-xs">
+            <dl class="col-sm-2 site-link">
+                <dt>产品</dt>
+                
+                <dd><a href="https://segmentfault.com/questions/hottest?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=product&amp;utm_content=footer-links-hottest-questions&amp;utm_term=%E7%83%AD%E9%97%A8%E9%97%AE%E7%AD%94">热门问答</a></dd>
+                <dd><a href="https://segmentfault.com/blogs/hottest?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=product&amp;utm_content=footer-links-hottest-questions&amp;utm_term=%E7%83%AD%E9%97%A8%E4%B8%93%E6%A0%8F">热门专栏</a></dd>
+                <dd><a href="https://segmentfault.com/lives?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=product&amp;utm_content=footer-links-hottest-questions&amp;utm_term=%E7%83%AD%E9%97%A8%E8%AE%B2%E5%A0%82">热门讲堂</a></dd>
+                <dd><a href="https://segmentfault.com/events?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=product&amp;utm_content=footer-links-hottest-questions&amp;utm_term=%E6%9C%80%E6%96%B0%E6%B4%BB%E5%8A%A8">最新活动</a></dd>
+                <dd><a href="https://segmentfault.com/groups?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=product&amp;utm_content=footer-links-hottest-questions&amp;utm_term=%E5%9C%88%E5%AD%90">圈子</a></dd>
+                <dd><a href="https://segmentfault.com/groups?tab=jobs&amp;utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=product&amp;utm_content=footer-links-hottest-questions&amp;utm_term=%E6%89%BE%E5%B7%A5%E4%BD%9C">酷工作</a></dd>
+                <dd><a href="https://segmentfault.com/app?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=product&amp;utm_content=footer-links-hottest-questions&amp;utm_term=app">移动客户端</a></dd>
+                
+            </dl>
+            
+            <dl class="col-sm-2 site-link">
+                <dt>资源</dt>
+                <dd><a href="https://segmentfault.com/weekly?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=resource&amp;utm_content=footer-links-weekly&amp;utm_term=%E6%AF%8F%E5%91%A8%E7%B2%BE%E9%80%89">每周精选</a></dd>
+                <dd><a href="https://segmentfault.com/users?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=resource&amp;utm_content=footer-links-users&amp;utm_term=%E7%94%A8%E6%88%B7%E6%8E%92%E8%A1%8C%E6%A6%9C">用户排行榜</a></dd>
+                <dd><a href="https://segmentfault.com/badges?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=resource&amp;utm_content=footer-links-badges&amp;utm_term=%E5%BE%BD%E7%AB%A0">徽章</a></dd>
+                <dd><a href="https://segmentfault.com/faq?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=resource&amp;utm_content=footer-links-faq&amp;utm_term=%E5%B8%AE%E5%8A%A9%E4%B8%AD%E5%BF%83">帮助中心</a></dd>
+                <dd><a href="https://segmentfault.com/repu?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=resource&amp;utm_content=footer-links-repu&amp;utm_term=%E5%A3%B0%E6%9C%9B%E4%B8%8E%E6%9D%83%E9%99%90">声望与权限</a></dd>
+                <dd><a href="https://segmentfault.com/community?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=resource&amp;utm_content=footer-links-community&amp;utm_term=%E7%A4%BE%E5%8C%BA%E6%9C%8D%E5%8A%A1%E4%B8%AD%E5%BF%83">社区服务中心</a></dd>
+                <dd><a href="https://docs.segmentfault.com/?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=resource&amp;utm_content=footer-links-docs&amp;utm_term=%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C">开发手册</a></dd>
+
+   
+            </dl>
+
+            <dl class="col-sm-2 site-link">
+                <dt>商务</dt>
+                <dd><a href="https://business.segmentfault.com/services?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=business&amp;utm_content=footer-links-services-rencai&amp;utm_term=%E4%BA%BA%E6%89%8D%E6%9C%8D%E5%8A%A1" target="_blank">人才服务</a></dd>
+                <dd><a href="https://business.segmentfault.com/services?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=business&amp;utm_content=footer-links-services-qiyeneixun&amp;utm_term=%E4%BC%81%E4%B8%9A%E6%9C%8D%E5%8A%A1" target="_blank">企业培训</a></dd>
+                <dd><a href="https://business.segmentfault.com/services?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=business&amp;utm_content=footer-links-services-huodongcehua&amp;utm_term=%E6%B4%BB%E5%8A%A8%E7%AD%96%E5%88%92" target="_blank">活动策划</a></dd>
+                <dd><a href="https://business.segmentfault.com/ads?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=business&amp;utm_content=footer-links-ads&amp;utm_term=%E5%B9%BF%E5%91%8A%E6%8A%95%E6%94%BE" target="_blank">广告投放</a></dd>
+                <dd><a href="https://business.segmentfault.com/bc?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=business&amp;utm_content=footer-links-bc&amp;utm_term=%E5%8C%BA%E5%9D%97%E9%93%BE%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88" target="_blank">区块链解决方案</a></dd>
+                <dd><a href="https://business.segmentfault.com/contact?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=business&amp;utm_content=footer-links-contact&amp;utm_term=%E5%90%88%E4%BD%9C%E8%81%94%E7%B3%BB" target="_blank">合作联系</a></dd>
+            </dl>
+            
+            <dl class="col-sm-2 site-link">
+                <dt>关于</dt>
+                <dd><a href="https://about.segmentfault.com/?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=about&amp;utm_content=about-index&amp;utm_term=%E5%85%B3%E4%BA%8E%E6%88%91%E4%BB%AC">关于我们</a></dd>
+                <dd><a href="https://about.segmentfault.com/careers.html?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=about&amp;utm_content=about-careers&amp;utm_term=%E5%8A%A0%E5%85%A5%E6%88%91%E4%BB%AC">加入我们</a></dd>
+                <dd><a href="https://about.segmentfault.com/contact.html?utm_source=sf-footer&amp;utm_medium=footer-nav&amp;utm_campaign=about&amp;utm_content=about-contact&amp;utm_term=%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC">联系我们</a></dd>
+            </dl>
+
+            <dl class="col-sm-2 site-link">
+                <dt>关注</dt>
+                                <dd><a href="https://segmentfault.com/blog/segmentfault" target="_blank">产品技术日志</a></dd>
+                                <dd><a href="https://segmentfault.com/blog/community_admin" target="_blank">社区运营日志</a></dd>
+                                <dd><a href="https://segmentfault.com/blog/segmentfault_news" target="_blank">市场运营日志</a></dd>
+                                <dd><a href="https://segmentfault.com/blog/segmentfault_team" target="_blank">团队日志</a></dd>
+                                <dd><a href="https://segmentfault.com/blog/interview" target="_blank">社区访谈</a></dd>
+                                <dd>
+                    <ul class="sn-inline">
+                        <li>
+                            <a class="entypo-wechart icon-sn-weixin weixin-popover-qrcode" data-toggle="popover" data-placement="top" data-content="" data-original-title="" title="">微信</a>
+                        </li>
+                        <li>
+                            <a href="http://weibo.com/segmentfault" target="_blank" class="entypo-weibo icon-sn-weibo">新浪微博</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/SegmentFault" target="_blank" class="entypo-facebook icon-sn-github">Github</a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/segment_fault" target="_blank" class="entypo-twitter icon-sn-twitter">Twitter</a>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+
+            <dl class="col-sm-2 site-link" id="license">
+                <dt>条款</dt>
+                <dd><a href="https://segmentfault.com/tos">服务条款</a></dd>
+                <dd><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">内容许可</a></dd>
+                <dd>
+                    <a href="https://segmentfault.com/app" class="clearfix mt10 block"><img src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/appQrcode.png" class="app-qrcode"></a>
+                    <div class="app-download-desc">
+                        <p>扫一扫下载 App</p>
+                    </div>
+                    
+                </dd>
+            </dl>
+        </div>
+        <div class="copyright">
+            Copyright © 2011-2019 SegmentFault. 当前呈现版本 19.02.27<br>
+            <a href="http://www.miibeian.gov.cn/" rel="nofollow">浙ICP备 15005796号-2</a> &nbsp;
+            <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602002000" rel="nofollow">浙公网安备 33010602002000号</a>
+            <span class="ml5">杭州堆栈科技有限公司版权所有</span>
+            <p class="mt30">CDN 存储服务由 <a target="_blank" href="https://www.upyun.com/?utm_source=segmentfault&amp;utm_medium=link&amp;utm_campaign=upyun&amp;md=segmentfault">又拍云</a> 赞助提供 </p>
+        </div>
+        <p class="text-center">
+            <a class="js__view--selector hidden-sm hidden-md hidden-lg" data-action="mobile" href="javascript:;">移动版</a>
+            <a class="js__view--selector hidden-sm hidden-md hidden-lg" data-action="desktop" href="javascript:;">桌面版</a>
+        </p>
+    </div>
+</footer>
+
+<div id="fixedTools" class="hidden-xs hidden-sm">
+    <a id="backtop" class="border-bottom" href="https://segmentfault.com/a/1190000009972187#">回顶部</a>
+</div>
+
+    <script id="loginModal" type="text/template">
+    <div class="row bg-white login-modal">
+        <div class="col-md-12 login-wrap">
+            <form action="/api/user/login" method="POST" role="form" class="mt15">
+                <div class="form-group hidden">
+                                        <input type="text" class="form-control" name="remember" value="1"
+                           autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="username" class="control-label">手机号 或 Email</label>
+                    <input type="text" class="form-control" name="username" tabindex="1" required placeholder="11 位手机号 或 Email"
+                           autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">密码</label><span class="pull-right"><a
+                                href="/user/forgot" tabindex="4">忘记密码</a></span>
+                    <input type="password" class="form-control" name="password" tabindex="2" required placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <a
+                            
+                                                    href="/user/phoneLogin"
+                            class="phoneLogin"
+                                            >手机验证码登录</a>
+                </div>
+                <div class="form-group clearfix">
+                    <button type="submit" class="btn-block btn btn-primary pull-right pl20 pr20" tabindex="3"
+                            onclick='ga("send", "event", "email login button", "clicked", "login modal");'>登录
+                    </button>
+                </div>
+            </form>
+            <div class="text-muted text-center more-login-area">
+    <span class="more-login-words">更多登录方式</span>
+</div>
+<div class="widget-login mb15 text-center">
+    <a href="/user/oauth/google" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "google"});'><span
+                class="icon-sn-google"></span></a>
+    <a href="/user/oauth/github" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "github"});");'><span
+                class="icon-sn-github"></span></a>
+    <a href="/user/oauth/weibo" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "weibo"});'><span
+                class="icon-sn-weibo"></span></a>
+    <a href="/user/oauth/qq" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "qq"});'><span
+                class="icon-sn-qq"></span></a>
+    <a href="/user/oauth/weixin" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "qq"});'><span
+                class="icon-sn-weixin"></span></a>
+    <a href="/user/oauth/linkedin" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "linkedin"});'><span
+                class="icon-sn-linkedin"></span></a>
+    <span id="loginShowMore" style="cursor: pointer" class="mb5"><span class="icon-sn-dotted"></span></span>
+    <a href="/user/oauth/twitter" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "twitter"});'><span
+                class="icon-sn-twitter"></span></a>
+    <a href="/user/oauth/facebook" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "facebook"});'><span
+                class="icon-sn-facebook"></span></a>
+    <a href="/user/oauth/douban" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "douban"});'><span
+                class="icon-sn-douban"></span></a>
+</div>
+<div class="form-group clearfix">
+    <a class="btn-block btn btn-default pull-right pl20 pr20 
+                        SFLogin
+             "
+
+            
+        onclick='ga("send", "event", "email login button", "clicked", "login modal");'>
+                    注册新账号
+            </a>
+</div>
+<p class="text-muted text-center mb15">登录即表示你同意网站的<a href="/tos" target="_blank">《服务条款》</a></p>        </div>
+    </div>
+</script>
+    <script id="registerModal" type="text/template">
+    <div class="row bg-white login-modal">
+        <div class="col-md-12 login-wrap">
+            
+            <form action="/api/user/register" method="POST" role="form" class="mt15">
+                <div class="form-group">
+                    <label for="name" class="control-label">你的名字</label>
+                    <input type="text" class="form-control" name="name" required placeholder="真实姓名或常用昵称">
+                </div>
+                
+                <div class="form-group">
+                    <label for="mail" class="control-label">手机号</label>
+                    <input type="text" class="form-control" id="login-name" name="mail" required placeholder="11 位手机号">
+                </div>
+                
+                <input type="text" class="hidden" name="register_type" value="mail">
+
+                <div class="form-group">
+                    <div class="captchaInput mb10">
+                        <input type="text" class="form-control" name="cap" placeholder="右侧的验证码" style="width:50%; display: inline; margin-right: 15px;">
+                        <span class="mt10">
+                                <a id="loginReloadCaptcha" href="javascript:void(0)">
+                                <img src="/user/captcha?w=135&h=34" class="cap" width="135" height="34"/></a>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="phone-register-only hidden">
+                        <div class="input-group">
+                            <input name="code" type="text" class="form-control js-user-login__phone-code-value" placeholder="短信验证码">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default js-user-login__phone-vaild-btn" style="width:96px;" type="button">
+                                获取验证码</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="control-label">密码</label>
+                    <input type="password" class="form-control" name="password" required placeholder="不少于 6 位的密码">
+                </div>
+                <div class="form-group clearfix">
+                    <button type="submit" class="btn-block btn btn-primary pl20 pr20 pull-right"
+                            onclick='ga("send", "event", "email register button", "clicked", "login modal");'>注册
+                    </button>
+                </div>
+                                <div class="text-muted text-center more-login-area">
+    <span class="more-login-words">更多登录方式</span>
+</div>
+<div class="widget-login mb15 text-center">
+    <a href="/user/oauth/google" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "google"});'><span
+                class="icon-sn-google"></span></a>
+    <a href="/user/oauth/github" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "github"});");'><span
+                class="icon-sn-github"></span></a>
+    <a href="/user/oauth/weibo" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "weibo"});'><span
+                class="icon-sn-weibo"></span></a>
+    <a href="/user/oauth/qq" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "qq"});'><span
+                class="icon-sn-qq"></span></a>
+    <a href="/user/oauth/weixin" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "qq"});'><span
+                class="icon-sn-weixin"></span></a>
+    <a href="/user/oauth/linkedin" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "linkedin"});'><span
+                class="icon-sn-linkedin"></span></a>
+    <span id="loginShowMore" style="cursor: pointer" class="mb5"><span class="icon-sn-dotted"></span></span>
+    <a href="/user/oauth/twitter" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "twitter"});'><span
+                class="icon-sn-twitter"></span></a>
+    <a href="/user/oauth/facebook" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "facebook"});'><span
+                class="icon-sn-facebook"></span></a>
+    <a href="/user/oauth/douban" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "douban"});'><span
+                class="icon-sn-douban"></span></a>
+</div>
+<div class="form-group clearfix">
+    <a class="btn-block btn btn-default pull-right pl20 pr20 
+                        SFRegister
+             "
+
+            
+        onclick='ga("send", "event", "email login button", "clicked", "login modal");'>
+                    已有账号登录
+            </a>
+</div>
+<p class="text-muted text-center mb15">登录即表示你同意网站的<a href="/tos" target="_blank">《服务条款》</a></p>            </form>
+        </div>
+    </div>
+</script>
+    <script id="phoneLoginModal" type="text/template">
+
+    <div class="row bg-white login-modal phonelogin-modal">
+        <div class="col-md-12 login-wrap">
+            <form action="/api/user/phonelogin" method="POST" role="form" class="mt15">
+                <div class="form-group">
+                    <label for="phone" class="control-label required">手机号</label>
+                    <input type="text" class="form-control phonelogin--phone" name="phone" tabindex="1" required placeholder="11 位手机号"
+                           autocomplete="off">
+                    <span class="help-block"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="authCode" class="control-label required">验证码</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control bindphone--code" name="authCode" placeholder="短信验证码">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default user-bind__phone-vaild-btn" type="button">获取验证码</button>
+                        </span>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+
+                <div class="form-group">
+                    <a 
+                                                            href="/user/login"
+                                class="SFRegister"
+                                                >密码登录（手机号或 Email）</a>
+                </div>
+                <div class="form-group clearfix">
+                    <button type="submit" class="btn-block btn btn-primary pull-right pl20 pr20" tabindex="3"
+                            onclick='ga("send", "event", "email login button", "clicked", "login modal");'>登录
+                    </button>
+                </div>
+            </form>
+            <div class="text-muted text-center more-login-area">
+    <span class="more-login-words">更多登录方式</span>
+</div>
+<div class="widget-login mb15 text-center">
+    <a href="/user/oauth/google" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "google"});'><span
+                class="icon-sn-google"></span></a>
+    <a href="/user/oauth/github" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "github"});");'><span
+                class="icon-sn-github"></span></a>
+    <a href="/user/oauth/weibo" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "weibo"});'><span
+                class="icon-sn-weibo"></span></a>
+    <a href="/user/oauth/qq" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "qq"});'><span
+                class="icon-sn-qq"></span></a>
+    <a href="/user/oauth/weixin" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "qq"});'><span
+                class="icon-sn-weixin"></span></a>
+    <a href="/user/oauth/linkedin" class=""
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "linkedin"});'><span
+                class="icon-sn-linkedin"></span></a>
+    <span id="loginShowMore" style="cursor: pointer" class="mb5"><span class="icon-sn-dotted"></span></span>
+    <a href="/user/oauth/twitter" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "twitter"});'><span
+                class="icon-sn-twitter"></span></a>
+    <a href="/user/oauth/facebook" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "facebook"});'><span
+                class="icon-sn-facebook"></span></a>
+    <a href="/user/oauth/douban" class=" hidden"
+       onclick='ga("send", "event", "3rd login button", "clicked", "login modal", {media: "douban"});'><span
+                class="icon-sn-douban"></span></a>
+</div>
+<div class="form-group clearfix">
+    <a class="btn-block btn btn-default pull-right pl20 pr20 
+                        SFLogin
+             "
+
+            
+        onclick='ga("send", "event", "email login button", "clicked", "login modal");'>
+                    注册新账号
+            </a>
+</div>
+<p class="text-muted text-center mb15">登录即表示你同意网站的<a href="/tos" target="_blank">《服务条款》</a></p>        </div>
+    </div>
+</script>
+<script id="bindPhoneModal" type="text/template">
+    <div class="bg-white bindphone-model">
+        <div class="alert alert-warning" role="alert">
+            为了保证账号安全，请先绑定手机
+        </div>
+        <div>
+            <form class="form-horizontal form__bindphone-apply" style="background-color:#fff;padding:0;">
+                <div class="form-group ">
+                    <label for="phoneNumber" class="col-sm-3 control-label required" >手机号码</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control bindphone--phone" id="phoneNumber" name="phone" placeholder="仅只支持大陆手机号">
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+                <div class="form-group">
+                    <label for="authCode" class="col-sm-3 control-label required">验证码</label>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control bindphone--code" name="code" placeholder="短信验证码">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default user-bind__phone-vaild-btn" type="button">获取验证码</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</script>
+
+
+<script>
+    window.serverTime = 1553306455000;
+</script>
+
+<script>
+    (function (w) {
+        w.SF = {
+            staticUrl: "https://static.segmentfault.com/v-5c8b4d77"
+        };
+        w.SF.token = (function () {
+    var _1JX = '0'//'v'
++/* 'e'//'e' */''+'cc0'//'k3i'
++'f78'//'TK'
++//'AR'
+'617'+'9b'//'TU'
++'3'//'rQU'
++'b9'//'7fd'
++'4b1'//'3m'
++//'S23'
+'c8'+//'meY'
+'380'+//'k'
+'8'+'un'//'un'
++'858'//'Iyz'
++//'nZ2'
+'ce3'+//'Qc'
+'9'+/* 'kh8'//'kh8' */''+'a'//'OD'
+, _taH = [[24,26]];
+
+    for (var i = 0; i < _taH.length; i ++) {
+        _1JX = _1JX.substring(0, _taH[i][0]) + _1JX.substring(_taH[i][1]);
+    }
+
+    return _1JX;
+})();;
+    })(window);
+
+                var lock = {
+        type: "",
+        text: '',
+        table: {"ban_post":[1,"\u4f60\u5df2\u7ecf\u88ab\u7981\u8a00, \u65e0\u6cd5\u8fdb\u884c\u6b64\u64cd\u4f5c, \u5982\u6709\u7591\u4e49\u8bf7\u63d0\u4ea4\u7533\u8bc9, \u6216\u8005\u53d1\u90ae\u4ef6\u5230pr@segmentfault.com"]}
+    };
+
+        var ddosMode = false;
+    
+        (function (currentUrl) {
+        if (typeof URL != 'undefined') {
+            var baseUrl = new URL('https://segmentfault.com');
+
+            if (baseUrl.protocol != currentUrl.protocol
+                || baseUrl.host != currentUrl.host) {
+                window.location.href = baseUrl.protocol + '//' + baseUrl.host
+                    + currentUrl.pathname + currentUrl.search + currentUrl.hash;
+            }
+        }
+    })(window.location);
+    </script>
+
+             <script crossorigin="" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/assets.js.下载"></script>
+                 
+        <script crossorigin="" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/post.min.js.下载"></script>
+            
+
+<script>
+if (!!navigator.userAgent.match(/MicroMessenger/i)) {
+    require.config({
+        paths: { weixin_jsapi: '//res.wx.qq.com/open/js/jweixin-1.2.0' }
+    });
+
+    require(['weixin_jsapi'], function (wx) {
+        var share = {"title":"\u6155\u8bfe\u7f51_\u300aJava\u5b9a\u65f6\u4efb\u52a1\u8c03\u5ea6\u5de5\u5177\u8be6\u89e3\u4e4bQuartz\u7bc7\u300b\u5b66\u4e60\u603b\u7ed3","desc":"\u65f6\u95f4\uff1a2017\u5e7406\u670826\u65e5\u661f\u671f\u4e00\u8bf4\u660e\uff1a\u672c\u6587\u90e8\u5206\u5185\u5bb9\u5747\u6765\u81ea\u6155\u8bfe\u7f51\u3002@\u6155\u8bfe\u7f51\uff1a[\u94fe\u63a5]\u6559\u5b66\u793a\u4f8b\u6e90\u7801\uff1a[\u94fe\u63a5]\u4e2a\u4eba\u5b66\u4e60\u6e90\u7801\uff1a[\u94fe\u63a5]","link":"https:\/\/segmentfault.com\/a\/1190000009972187","imgUrl":"https:\/\/segmentfault.com\/img\/bVP0l8?w=554&amp;h=236"};
+        share.title += ' - SegmentFault 思否';
+
+        $.getJSON('/api/util/weixin/jsapi', function (o) {
+            methods = o.data.jsApiList.slice();
+
+            wx.config(o.data);
+            wx.error(console.error);
+            wx.ready(function () {
+                methods.forEach(function (method) {
+                    wx[method](share);
+                });
+            });
+        });
+    });
+}
+</script>
+
+<script src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/ads.min.js.下载" type="text/javascript"></script><iframe id="google_osd_static_frame_6265283987739" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/saved_resource(2).html"></iframe><div id="UGTKzPZbRoOS" style="display: none;"></div>
+
+<script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-918487-8']);
+    _gaq.push(['_trackPageview']);
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+                
+        
+
+                
+
+    ga('create', 'UA-918487-8', 'auto', {
+        'userID'
+    : 0,
+        'createdTime'
+    : 0,
+        'now'
+    : 1553306455,
+        'allowLinker'
+    : true });
+    ga('require', 'linker');
+    ga('linker:autoLink', ['docs.segmentfault.com'] );
+    ga('set', 'dimension1', 'guest');
+    ga('send', 'pageview');
+
+        if(document.getElementById('UGTKzPZbRoOS')){
+        UGTKzPZbRoOS='No';
+    } else {
+        UGTKzPZbRoOS='Yes';
+    }
+
+    if(typeof ga !=='undefined'){
+        ga('send','event','Blocking Ads',UGTKzPZbRoOS,{'nonInteraction':1});
+    } else if(typeof _gaq !=='undefined'){
+        _gaq.push(['_trackEvent','Blocking Ads',UGTKzPZbRoOS,undefined,undefined,true]);
+    }
+
+</script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?e23800c454aa573c0ccb16b52665ac26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+<ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0px;width:0px;height:0px;" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/saved_resource(3).html"></iframe></ins></ins></ins><iframe id="p_analyse_iframe" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/saved_resource(4).html" style="display: none;"></iframe><div id="atwho-container"><div id="atwho-ground-36fdeee91553306456863"><div class="atwho-view" id="at-view-64"><ul class="atwho-view-ul"></ul></div></div></div></body><iframe id="google_esf" name="google_esf" src="./慕课网_《Java定时任务调度工具详解之Quartz篇》学习总结 - study - SegmentFault 思否_files/zrt_lookup.html" data-ad-client="ca-pub-6330872677300335" style="display: none;"></iframe></html>
